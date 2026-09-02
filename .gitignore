@@ -1,0 +1,40 @@
+HELP.md
+target/
+.tools/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+### Visual Studio Code ###
+.vscode/
+
+### Environment and secrets ###
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+### Logs and operating systems ###
+*.log
+.DS_Store
+Thumbs.db
+
+### Test and coverage output ###
+coverage/
+test-results/

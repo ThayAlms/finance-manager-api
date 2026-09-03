@@ -28,3 +28,6 @@ Thumbs.db
 
 # Notas internas de planejamento (nao sao entregavel do CP1)
 planejamento/
+
+# Config local de ferramenta (Claude Code)
+.claude/

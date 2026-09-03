@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1390" height="765" viewBox="0 0 1390 765" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif">
+<defs><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3.5" flood-color="#0F172A" flood-opacity="0.13"/></filter></defs>
+<rect width="1390" height="765" fill="#FFFFFF"/>
+<text x="60" y="46" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="23" fill="#0F172A" text-anchor="start" font-weight="700">CaixaLivre — Diagrama Entidade-Relacionamento</text>
+<text x="60" y="70" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12.5" fill="#64748B" text-anchor="start" font-weight="400">Gestão financeira para autônomos e MEIs  ·  PostgreSQL  ·  FastAPI + SQLAlchemy 2</text>
+<line x1="60" y1="86" x2="1330" y2="86" stroke="#E8ECF1" stroke-width="1"/>
+<path d="M390,237 H450 V179 H514" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M450,237 V479 H514" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M514,179 L530,172 M514,179 L530,179 M514,179 L530,186" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M514,479 L530,472 M514,479 L530,479 M514,479 L530,486" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="406" y1="230" x2="406" y2="244" stroke="#7C8BA1" stroke-width="1.6"/>
+<text x="406" y="225" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#64748B" text-anchor="middle" font-weight="700">1</text>
+<text x="482" y="171" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="middle" font-weight="400">CASCADE</text>
+<text x="482" y="471" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="middle" font-weight="400">CASCADE</text>
+<text x="522" y="169" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#64748B" text-anchor="middle" font-weight="700">N</text>
+<text x="522" y="469" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#64748B" text-anchor="middle" font-weight="700">N</text>
+<path d="M60,237 H30 V499 H44" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M44,499 L60,492 M44,499 L60,499 M44,499 L60,506" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="48" y1="230" x2="48" y2="244" stroke="#7C8BA1" stroke-width="1.6"/>
+<text x="48" y="225" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#64748B" text-anchor="middle" font-weight="700">1</text>
+<text x="40" y="396" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="start" font-weight="400">CASCADE</text>
+<text x="52" y="489" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#64748B" text-anchor="middle" font-weight="700">N</text>
+<path d="M860,157 H930 V359 H984" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M984,359 L1000,352 M984,359 L1000,359 M984,359 L1000,366" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="874" y1="150" x2="874" y2="164" stroke="#7C8BA1" stroke-width="1.6"/>
+<text x="874" y="145" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#64748B" text-anchor="middle" font-weight="700">1</text>
+<text x="924" y="232" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="end" font-weight="400">RESTRICT</text>
+<text x="992" y="349" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#64748B" text-anchor="middle" font-weight="700">N</text>
+<path d="M860,457 H955 V381 H984" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M984,381 L1000,374 M984,381 L1000,381 M984,381 L1000,388" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="874" y1="450" x2="874" y2="464" stroke="#7C8BA1" stroke-width="1.6"/>
+<text x="874" y="445" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#64748B" text-anchor="middle" font-weight="700">1</text>
+<text x="949" y="424" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="end" font-weight="400">RESTRICT</text>
+<text x="992" y="399" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#64748B" text-anchor="middle" font-weight="700">N</text>
+<rect x="60" y="190" width="330" height="168" rx="9" fill="#FFFFFF" filter="url(#sh)"/>
+<path d="M60,226 V199 a9,9 0 0 1 9,-9 h312 a9,9 0 0 1 9,9 V226 Z" fill="#2A4E86"/>
+<rect x="61" y="226" width="328" height="22" fill="#F7F9FC"/>
+<rect x="74" y="231" width="24" height="13" rx="3.5" fill="#B45309"/>
+<text x="86" y="241" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">PK</text>
+<text x="104" y="241" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">id</text>
+<text x="376" y="241" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigserial</text>
+<line x1="60" y1="248" x2="390" y2="248" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="263" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">nome</text>
+<text x="376" y="263" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">varchar(120)</text>
+<line x1="60" y1="270" x2="390" y2="270" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="285" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">email</text>
+<text x="376" y="285" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">varchar(180) · UNIQUE</text>
+<line x1="60" y1="292" x2="390" y2="292" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="307" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">senha_hash</text>
+<text x="376" y="307" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">varchar(255)</text>
+<line x1="60" y1="314" x2="390" y2="314" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="329" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">criado_em</text>
+<text x="376" y="329" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<line x1="60" y1="336" x2="390" y2="336" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="351" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">atualizado_em</text>
+<text x="376" y="351" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<text x="74" y="214" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="15" fill="#FFFFFF" text-anchor="start" font-weight="700" letter-spacing="0.3">usuario</text>
+<text x="376" y="213" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9.5" fill="#FFFFFF" text-anchor="end" font-weight="400" opacity="0.72">6 colunas</text>
+<rect x="60" y="190" width="330" height="168" rx="9" fill="none" stroke="#D6DEE8" stroke-width="1"/>
+<rect x="530" y="110" width="330" height="245" rx="9" fill="#FFFFFF" filter="url(#sh)"/>
+<path d="M530,146 V119 a9,9 0 0 1 9,-9 h312 a9,9 0 0 1 9,9 V146 Z" fill="#177D6E"/>
+<rect x="531" y="146" width="328" height="22" fill="#F7F9FC"/>
+<rect x="544" y="151" width="24" height="13" rx="3.5" fill="#B45309"/>
+<text x="556" y="161" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">PK</text>
+<text x="574" y="161" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">id</text>
+<text x="846" y="161" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigserial</text>
+<rect x="531" y="168" width="328" height="22" fill="#F7F9FC"/>
+<line x1="530" y1="168" x2="860" y2="168" stroke="#E8ECF1" stroke-width="1"/>
+<rect x="544" y="173" width="24" height="13" rx="3.5" fill="#2563EB"/>
+<text x="556" y="183" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">FK</text>
+<text x="574" y="183" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">usuario_id</text>
+<text x="846" y="183" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigint</text>
+<line x1="530" y1="190" x2="860" y2="190" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="205" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">nome</text>
+<text x="846" y="205" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">varchar(80)</text>
+<line x1="530" y1="212" x2="860" y2="212" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="227" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">tipo</text>
+<text x="846" y="227" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#7E22CE" text-anchor="end" font-weight="400">tipo_conta</text>
+<line x1="530" y1="234" x2="860" y2="234" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="249" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">natureza</text>
+<text x="846" y="249" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#7E22CE" text-anchor="end" font-weight="400">natureza</text>
+<line x1="530" y1="256" x2="860" y2="256" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="271" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">saldo_inicial</text>
+<text x="846" y="271" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">numeric(14,2) · DEFAULT 0</text>
+<line x1="530" y1="278" x2="860" y2="278" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="293" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">criado_em</text>
+<text x="846" y="293" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<line x1="530" y1="300" x2="860" y2="300" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="315" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">atualizado_em</text>
+<text x="846" y="315" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<rect x="531" y="322" width="328" height="32" fill="#FBFCFE"/>
+<line x1="530" y1="322" x2="860" y2="322" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="342" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="start" font-weight="400">UNIQUE (usuario_id, nome)</text>
+<text x="544" y="134" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="15" fill="#FFFFFF" text-anchor="start" font-weight="700" letter-spacing="0.3">conta</text>
+<text x="846" y="133" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9.5" fill="#FFFFFF" text-anchor="end" font-weight="400" opacity="0.72">8 colunas</text>
+<rect x="530" y="110" width="330" height="245" rx="9" fill="none" stroke="#D6DEE8" stroke-width="1"/>
+<rect x="530" y="410" width="330" height="235" rx="9" fill="#FFFFFF" filter="url(#sh)"/>
+<path d="M530,446 V419 a9,9 0 0 1 9,-9 h312 a9,9 0 0 1 9,9 V446 Z" fill="#8A6416"/>
+<rect x="531" y="446" width="328" height="22" fill="#F7F9FC"/>
+<rect x="544" y="451" width="24" height="13" rx="3.5" fill="#B45309"/>
+<text x="556" y="461" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">PK</text>
+<text x="574" y="461" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">id</text>
+<text x="846" y="461" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigserial</text>
+<rect x="531" y="468" width="328" height="22" fill="#F7F9FC"/>
+<line x1="530" y1="468" x2="860" y2="468" stroke="#E8ECF1" stroke-width="1"/>
+<rect x="544" y="473" width="24" height="13" rx="3.5" fill="#2563EB"/>
+<text x="556" y="483" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">FK</text>
+<text x="574" y="483" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">usuario_id</text>
+<text x="846" y="483" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigint · NULL</text>
+<line x1="530" y1="490" x2="860" y2="490" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="505" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">nome</text>
+<text x="846" y="505" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">varchar(60)</text>
+<line x1="530" y1="512" x2="860" y2="512" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="527" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">tipo</text>
+<text x="846" y="527" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#7E22CE" text-anchor="end" font-weight="400">tipo_movimento</text>
+<line x1="530" y1="534" x2="860" y2="534" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="549" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">criado_em</text>
+<text x="846" y="549" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<line x1="530" y1="556" x2="860" y2="556" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="571" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">atualizado_em</text>
+<text x="846" y="571" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<rect x="531" y="578" width="328" height="66" fill="#FBFCFE"/>
+<line x1="530" y1="578" x2="860" y2="578" stroke="#E8ECF1" stroke-width="1"/>
+<text x="544" y="598" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="start" font-weight="400">usuario_id NULL = categoria de sistema</text>
+<text x="544" y="615" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="start" font-weight="400">UQ parcial (nome, tipo) WHERE usuario_id IS NULL</text>
+<text x="544" y="632" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="start" font-weight="400">UQ parcial (usuario_id, nome, tipo) WHERE NOT NULL</text>
+<text x="544" y="434" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="15" fill="#FFFFFF" text-anchor="start" font-weight="700" letter-spacing="0.3">categoria</text>
+<text x="846" y="433" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9.5" fill="#FFFFFF" text-anchor="end" font-weight="400" opacity="0.72">6 colunas</text>
+<rect x="530" y="410" width="330" height="235" rx="9" fill="none" stroke="#D6DEE8" stroke-width="1"/>
+<rect x="1000" y="290" width="330" height="289" rx="9" fill="#FFFFFF" filter="url(#sh)"/>
+<path d="M1000,326 V299 a9,9 0 0 1 9,-9 h312 a9,9 0 0 1 9,9 V326 Z" fill="#5A3E8C"/>
+<rect x="1001" y="326" width="328" height="22" fill="#F7F9FC"/>
+<rect x="1014" y="331" width="24" height="13" rx="3.5" fill="#B45309"/>
+<text x="1026" y="341" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">PK</text>
+<text x="1044" y="341" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">id</text>
+<text x="1316" y="341" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigserial</text>
+<rect x="1001" y="348" width="328" height="22" fill="#F7F9FC"/>
+<line x1="1000" y1="348" x2="1330" y2="348" stroke="#E8ECF1" stroke-width="1"/>
+<rect x="1014" y="353" width="24" height="13" rx="3.5" fill="#2563EB"/>
+<text x="1026" y="363" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">FK</text>
+<text x="1044" y="363" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">conta_id</text>
+<text x="1316" y="363" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigint</text>
+<rect x="1001" y="370" width="328" height="22" fill="#F7F9FC"/>
+<line x1="1000" y1="370" x2="1330" y2="370" stroke="#E8ECF1" stroke-width="1"/>
+<rect x="1014" y="375" width="24" height="13" rx="3.5" fill="#2563EB"/>
+<text x="1026" y="385" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">FK</text>
+<text x="1044" y="385" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">categoria_id</text>
+<text x="1316" y="385" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigint</text>
+<line x1="1000" y1="392" x2="1330" y2="392" stroke="#E8ECF1" stroke-width="1"/>
+<text x="1014" y="407" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">descricao</text>
+<text x="1316" y="407" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">varchar(160)</text>
+<line x1="1000" y1="414" x2="1330" y2="414" stroke="#E8ECF1" stroke-width="1"/>
+<text x="1014" y="429" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">valor</text>
+<text x="1316" y="429" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">numeric(14,2)</text>
+<line x1="1000" y1="436" x2="1330" y2="436" stroke="#E8ECF1" stroke-width="1"/>
+<text x="1014" y="451" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">data</text>
+<text x="1316" y="451" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">date</text>
+<line x1="1000" y1="458" x2="1330" y2="458" stroke="#E8ECF1" stroke-width="1"/>
+<text x="1014" y="473" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">tipo</text>
+<text x="1316" y="473" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#7E22CE" text-anchor="end" font-weight="400">tipo_movimento</text>
+<line x1="1000" y1="480" x2="1330" y2="480" stroke="#E8ECF1" stroke-width="1"/>
+<text x="1014" y="495" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">natureza</text>
+<text x="1316" y="495" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#7E22CE" text-anchor="end" font-weight="400">natureza</text>
+<line x1="1000" y1="502" x2="1330" y2="502" stroke="#E8ECF1" stroke-width="1"/>
+<text x="1014" y="517" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">criado_em</text>
+<text x="1316" y="517" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<line x1="1000" y1="524" x2="1330" y2="524" stroke="#E8ECF1" stroke-width="1"/>
+<text x="1014" y="539" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">atualizado_em</text>
+<text x="1316" y="539" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<rect x="1001" y="546" width="328" height="32" fill="#FBFCFE"/>
+<line x1="1000" y1="546" x2="1330" y2="546" stroke="#E8ECF1" stroke-width="1"/>
+<text x="1014" y="566" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="start" font-weight="400">CHECK (valor &gt; 0)</text>
+<text x="1014" y="314" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="15" fill="#FFFFFF" text-anchor="start" font-weight="700" letter-spacing="0.3">transacao</text>
+<text x="1316" y="313" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9.5" fill="#FFFFFF" text-anchor="end" font-weight="400" opacity="0.72">10 colunas</text>
+<rect x="1000" y="290" width="330" height="289" rx="9" fill="none" stroke="#D6DEE8" stroke-width="1"/>
+<rect x="60" y="430" width="330" height="245" rx="9" fill="#FFFFFF" filter="url(#sh)"/>
+<path d="M60,466 V439 a9,9 0 0 1 9,-9 h312 a9,9 0 0 1 9,9 V466 Z" fill="#9B3B4F"/>
+<rect x="61" y="466" width="328" height="22" fill="#F7F9FC"/>
+<rect x="74" y="471" width="24" height="13" rx="3.5" fill="#B45309"/>
+<text x="86" y="481" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">PK</text>
+<text x="104" y="481" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">id</text>
+<text x="376" y="481" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigserial</text>
+<rect x="61" y="488" width="328" height="22" fill="#F7F9FC"/>
+<line x1="60" y1="488" x2="390" y2="488" stroke="#E8ECF1" stroke-width="1"/>
+<rect x="74" y="493" width="24" height="13" rx="3.5" fill="#2563EB"/>
+<text x="86" y="503" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" letter-spacing="0.4">FK</text>
+<text x="104" y="503" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="600">usuario_id</text>
+<text x="376" y="503" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">bigint</text>
+<line x1="60" y1="510" x2="390" y2="510" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="525" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">nome</text>
+<text x="376" y="525" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">varchar(80)</text>
+<line x1="60" y1="532" x2="390" y2="532" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="547" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">valor_meta</text>
+<text x="376" y="547" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">numeric(14,2)</text>
+<line x1="60" y1="554" x2="390" y2="554" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="569" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">valor_atual</text>
+<text x="376" y="569" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">numeric(14,2) · DEFAULT 0</text>
+<line x1="60" y1="576" x2="390" y2="576" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="591" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">prazo</text>
+<text x="376" y="591" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">date · NULL</text>
+<line x1="60" y1="598" x2="390" y2="598" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="613" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">criado_em</text>
+<text x="376" y="613" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<line x1="60" y1="620" x2="390" y2="620" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="635" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="start" font-weight="400">atualizado_em</text>
+<text x="376" y="635" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#64748B" text-anchor="end" font-weight="400">timestamptz</text>
+<rect x="61" y="642" width="328" height="32" fill="#FBFCFE"/>
+<line x1="60" y1="642" x2="390" y2="642" stroke="#E8ECF1" stroke-width="1"/>
+<text x="74" y="662" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9" fill="#94A3B8" text-anchor="start" font-weight="400">CHECK (valor_meta &gt; 0)  ·  CHECK (valor_atual &gt;= 0)</text>
+<text x="74" y="454" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="15" fill="#FFFFFF" text-anchor="start" font-weight="700" letter-spacing="0.3">meta</text>
+<text x="376" y="453" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9.5" fill="#FFFFFF" text-anchor="end" font-weight="400" opacity="0.72">8 colunas</text>
+<rect x="60" y="430" width="330" height="245" rx="9" fill="none" stroke="#D6DEE8" stroke-width="1"/>
+<rect x="1000" y="110" width="330" height="149" rx="9" fill="#FBFCFE" stroke="#D6DEE8" stroke-width="1"/>
+<text x="1014" y="132" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10" fill="#64748B" text-anchor="start" font-weight="700" letter-spacing="1.2">LEGENDA</text>
+<line x1="1000" y1="140" x2="1330" y2="140" stroke="#E8ECF1" stroke-width="1"/>
+<rect x="1014" y="149" width="24" height="13" rx="3.5" fill="#B45309"/>
+<text x="1026" y="159" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700">PK</text>
+<text x="1048" y="159" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="#0F172A" text-anchor="start" font-weight="400">chave primária</text>
+<rect x="1014" y="170" width="24" height="13" rx="3.5" fill="#2563EB"/>
+<text x="1026" y="180" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700">FK</text>
+<text x="1048" y="180" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="#0F172A" text-anchor="start" font-weight="400">chave estrangeira</text>
+<path d="M1014,198 H1036" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="1018" y1="191" x2="1018" y2="205" stroke="#7C8BA1" stroke-width="1.6"/>
+<path d="M1036,198 L1048,192 M1036,198 L1048,198 M1036,198 L1048,204" fill="none" stroke="#7C8BA1" stroke-width="1.6" stroke-linecap="round"/>
+<text x="1056" y="202" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="#0F172A" text-anchor="start" font-weight="400">relação 1 : N — pé-de-galinha no lado N</text>
+<text x="1014" y="223" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9.5" fill="#7E22CE" text-anchor="start" font-weight="700">NULL</text>
+<text x="1054" y="223" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="#0F172A" text-anchor="start" font-weight="400">aceita nulo — demais colunas NOT NULL</text>
+<text x="1014" y="244" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9.5" fill="#7E22CE" text-anchor="start" font-weight="700">enum</text>
+<text x="1054" y="244" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="#0F172A" text-anchor="start" font-weight="400">tipo enumerado nativo (ver abaixo)</text>
+<rect x="1000" y="610" width="330" height="116" rx="9" fill="#FBFCFE" stroke="#D6DEE8" stroke-width="1"/>
+<text x="1014" y="632" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10" fill="#64748B" text-anchor="start" font-weight="700" letter-spacing="1.2">ENUMS DO POSTGRESQL</text>
+<line x1="1000" y1="640" x2="1330" y2="640" stroke="#E8ECF1" stroke-width="1"/>
+<text x="1014" y="662" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10" fill="#7E22CE" text-anchor="start" font-weight="700">tipo_movimento</text>
+<text x="1316" y="662" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9.5" fill="#64748B" text-anchor="end" font-weight="400">RECEITA · DESPESA</text>
+<text x="1014" y="686" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10" fill="#7E22CE" text-anchor="start" font-weight="700">tipo_conta</text>
+<text x="1316" y="686" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9.5" fill="#64748B" text-anchor="end" font-weight="400">CORRENTE · POUPANCA · CARTEIRA</text>
+<text x="1014" y="710" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="10" fill="#7E22CE" text-anchor="start" font-weight="700">natureza</text>
+<text x="1316" y="710" font-family="'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace" font-size="9.5" fill="#64748B" text-anchor="end" font-weight="400">PESSOAL · NEGOCIO</text>
+<text x="60" y="726" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10" fill="#94A3B8" text-anchor="start" font-weight="400">criado_em / atualizado_em: TIMESTAMPTZ NOT NULL DEFAULT now() em todas as tabelas.</text>
+<text x="60" y="742" font-family="'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10" fill="#94A3B8" text-anchor="start" font-weight="400">transacao não possui usuario_id — o dono é alcançado por transacao → conta → usuario (3FN).</text>
+</svg>

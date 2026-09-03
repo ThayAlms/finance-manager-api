@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-caixalivre}
+      POSTGRES_USER: ${POSTGRES_USER:-caixalivre}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-caixalivre}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - caixalivre_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    environment:
+      APP_NAME: CaixaLivre API
+      ENVIRONMENT: docker
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-caixalivre}:${POSTGRES_PASSWORD:-caixalivre}@postgres:5432/${POSTGRES_DB:-caixalivre}
+      SECRET_KEY: ${SECRET_KEY:-desenvolvimento-local-troque-em-producao}
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 60
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  caixalivre_data:

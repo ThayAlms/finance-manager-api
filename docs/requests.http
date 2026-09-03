@@ -1,0 +1,89 @@
+@baseUrl = http://localhost:8000/api/v1
+@token = COLE_AQUI_O_ACCESS_TOKEN
+@categoriaId = ID_DA_CATEGORIA
+@contaId = ID_DA_CONTA
+
+### Saúde
+GET http://localhost:8000/health
+
+### Cadastrar usuário
+POST {{baseUrl}}/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Maria Silva",
+  "email": "maria@email.com",
+  "senha": "Senha@123"
+}
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "maria@email.com",
+  "senha": "Senha@123"
+}
+
+### Consultar perfil
+GET {{baseUrl}}/usuarios/me
+Authorization: Bearer {{token}}
+
+### Listar categorias, incluindo as de sistema
+GET {{baseUrl}}/categorias
+Authorization: Bearer {{token}}
+
+### Criar categoria pessoal
+POST {{baseUrl}}/categorias
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Clientes",
+  "tipo": "RECEITA"
+}
+
+### Criar conta
+POST {{baseUrl}}/contas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Conta PJ",
+  "tipo": "CORRENTE",
+  "natureza": "NEGOCIO",
+  "saldo_inicial": 1000.00
+}
+
+### Criar transação
+POST {{baseUrl}}/transacoes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "conta_id": {{contaId}},
+  "categoria_id": {{categoriaId}},
+  "descricao": "Serviço prestado",
+  "valor": 2500.00,
+  "data": "2026-09-03",
+  "tipo": "RECEITA"
+}
+
+### Conferir saldo calculado
+GET {{baseUrl}}/contas/{{contaId}}
+Authorization: Bearer {{token}}
+
+### Criar meta
+POST {{baseUrl}}/metas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Reserva de impostos",
+  "valor_meta": 10000.00,
+  "valor_atual": 2500.00,
+  "prazo": "2026-12-31"
+}
+
+### OpenAPI
+GET http://localhost:8000/openapi.json

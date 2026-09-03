@@ -27,6 +27,4 @@ htmlcov/
 Thumbs.db
 
 # Notas internas de planejamento (nao sao entregavel do CP1)
-docs/TRELLO.md
-docs/CARDS-CP1.md
-docs/guia-github.md
+planejamento/

@@ -2,8 +2,7 @@
 
 Gestão financeira para autônomos, freelancers e MEIs.
 
-> Projeto em construção — CP1 (FIAP). README completo entra no card
-> "README do projeto" (ver [docs/TRELLO.md](docs/TRELLO.md)).
+> Projeto em construção — CP1 (FIAP).
 
 ## Stack
 
@@ -11,9 +10,9 @@ Python + FastAPI + SQLAlchemy 2 + Alembic + PostgreSQL.
 
 ## Documentação
 
-- [Modelo de dados (DER)](docs/modelo-dados.md)
+- [Escopo](docs/escopo.md)
 - [Regras de negócio](docs/regras-de-negocio.md)
-- [Quadro Trello e cards do CP1](docs/TRELLO.md)
+- [Modelo de dados (DER)](docs/modelo-dados.md)
 
 ## Rodando localmente
 

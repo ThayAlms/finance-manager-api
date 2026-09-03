@@ -48,21 +48,9 @@ src/main/resources/
 docs/          contrato, regras e materiais da entrega
 ```
 
-## Regras de negócio principais
+## Regras de negócio
 
-- O e-mail do usuário é válido, único e normalizado em letras minúsculas.
-- A senha possui de 8 a 72 caracteres e é armazenada como hash BCrypt.
-- Categorias e contas pertencem a um único usuário e não podem ser duplicadas para ele.
-- Usuário, conta e categoria de uma transação devem ser compatíveis.
-- O tipo da transação deve ser igual ao tipo da categoria.
-- Somente transações `COMPLETED` movimentam o saldo.
-- Receitas concluídas creditam e despesas concluídas debitam a conta.
-- Atualizar ou excluir uma transação concluída reverte seu efeito anterior.
-- Recursos com dados financeiros vinculados não podem ser excluídos.
-- O valor atual de uma meta não pode superar o valor-alvo.
-- O prazo de uma meta não pode estar no passado.
-
-Todas as regras e seus códigos estão em [REGRAS_DE_NEGOCIO.md](docs/REGRAS_DE_NEGOCIO.md).
+As regras funcionais, seus códigos e respostas HTTP estão centralizados em [REGRAS_DE_NEGOCIO.md](docs/REGRAS_DE_NEGOCIO.md).
 
 ## Arquitetura
 
@@ -151,35 +139,9 @@ docker compose down
 
 O `Dockerfile` usa uma etapa Maven para compilar o `.jar` e uma imagem final menor com Java 21 JRE. O `compose.yaml` conecta a API ao PostgreSQL pelo nome do serviço `postgres`.
 
-## Endpoints
+## API
 
-| Método | Endpoint | Operação |
-|---|---|---|
-| `GET` | `/api/v1/users` | Listar usuários |
-| `GET` | `/api/v1/users/{id}` | Consultar usuário |
-| `POST` | `/api/v1/users` | Criar usuário |
-| `PUT` | `/api/v1/users/{id}` | Atualizar usuário |
-| `DELETE` | `/api/v1/users/{id}` | Excluir usuário |
-| `GET` | `/api/v1/categories?userId={uuid}` | Listar categorias |
-| `GET` | `/api/v1/categories/{id}` | Consultar categoria |
-| `POST` | `/api/v1/categories` | Criar categoria |
-| `PUT` | `/api/v1/categories/{id}` | Atualizar categoria |
-| `DELETE` | `/api/v1/categories/{id}` | Excluir categoria |
-| `GET` | `/api/v1/accounts?userId={uuid}` | Listar contas |
-| `GET` | `/api/v1/accounts/{id}` | Consultar conta e saldo |
-| `POST` | `/api/v1/accounts` | Criar conta |
-| `PUT` | `/api/v1/accounts/{id}` | Atualizar conta |
-| `DELETE` | `/api/v1/accounts/{id}` | Excluir conta |
-| `GET` | `/api/v1/transactions?userId={uuid}&startDate={data}&endDate={data}` | Listar transações |
-| `GET` | `/api/v1/transactions/{id}` | Consultar transação |
-| `POST` | `/api/v1/transactions` | Criar transação |
-| `PUT` | `/api/v1/transactions/{id}` | Atualizar e recalcular saldo |
-| `DELETE` | `/api/v1/transactions/{id}` | Excluir e reverter saldo |
-| `GET` | `/api/v1/goals?userId={uuid}` | Listar metas |
-| `GET` | `/api/v1/goals/{id}` | Consultar meta |
-| `POST` | `/api/v1/goals` | Criar meta |
-| `PUT` | `/api/v1/goals/{id}` | Atualizar meta |
-| `DELETE` | `/api/v1/goals/{id}` | Excluir meta |
+Os recursos disponíveis são usuários, categorias, contas, transações e metas, todos versionados em `/api/v1`. O contrato completo, a sequência recomendada de testes e o formato de erros estão em [docs/API.md](docs/API.md). Requisições prontas estão em [docs/requests.http](docs/requests.http).
 
 ## Swagger
 

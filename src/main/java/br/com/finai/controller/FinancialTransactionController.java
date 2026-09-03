@@ -1,5 +1,6 @@
 package br.com.finai.controller;
 
+import br.com.finai.config.StandardApiResponses;
 import br.com.finai.dto.transaction.TransactionRequest;
 import br.com.finai.dto.transaction.TransactionResponse;
 import br.com.finai.service.FinancialTransactionService;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/transactions")
 @Tag(name = "Transações", description = "Receitas e despesas com atualização automática do saldo")
+@StandardApiResponses
 public class FinancialTransactionController {
 
     private final FinancialTransactionService service;

@@ -1,5 +1,6 @@
 package br.com.finai.controller;
 
+import br.com.finai.config.StandardApiResponses;
 import br.com.finai.dto.category.CategoryRequest;
 import br.com.finai.dto.category.CategoryResponse;
 import br.com.finai.service.CategoryService;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/categories")
 @Tag(name = "Categorias", description = "Categorias personalizadas de receitas e despesas")
+@StandardApiResponses
 public class CategoryController {
 
     private final CategoryService service;

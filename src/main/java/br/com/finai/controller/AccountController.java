@@ -1,5 +1,6 @@
 package br.com.finai.controller;
 
+import br.com.finai.config.StandardApiResponses;
 import br.com.finai.dto.account.AccountRequest;
 import br.com.finai.dto.account.AccountResponse;
 import br.com.finai.dto.account.AccountUpdateRequest;
@@ -27,6 +28,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/accounts")
 @Tag(name = "Contas", description = "Contas bancárias, carteiras e saldos")
+@StandardApiResponses
 public class AccountController {
 
     private final AccountService service;

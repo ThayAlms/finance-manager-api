@@ -1,0 +1,78 @@
+@baseUrl = http://localhost:8080/api/v1
+@userId = SUBSTITUA_PELO_UUID_DO_USUARIO
+@categoryId = SUBSTITUA_PELO_UUID_DA_CATEGORIA
+@accountId = SUBSTITUA_PELO_UUID_DA_CONTA
+@transactionId = SUBSTITUA_PELO_UUID_DA_TRANSACAO
+
+### Saúde da aplicação
+GET http://localhost:8080/actuator/health
+
+### 1. Criar usuário
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "name": "Maria Silva",
+  "email": "maria@email.com",
+  "password": "Senha@123"
+}
+
+### 2. Criar categoria de despesa
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Alimentação",
+  "type": "EXPENSE",
+  "userId": "{{userId}}"
+}
+
+### 3. Criar conta
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "name": "Conta principal",
+  "type": "CHECKING",
+  "initialBalance": 1500.00,
+  "userId": "{{userId}}"
+}
+
+### 4. Criar despesa concluída
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+
+{
+  "description": "Compra no supermercado",
+  "amount": 250.90,
+  "date": "2026-09-03",
+  "type": "EXPENSE",
+  "status": "COMPLETED",
+  "categoryId": "{{categoryId}}",
+  "accountId": "{{accountId}}",
+  "userId": "{{userId}}"
+}
+
+### 5. Conferir saldo
+GET {{baseUrl}}/accounts/{{accountId}}
+
+### 6. Listar transações por período
+GET {{baseUrl}}/transactions?userId={{userId}}&startDate=2026-01-01&endDate=2026-12-31
+
+### 7. Cancelar e reverter transação
+PUT {{baseUrl}}/transactions/{{transactionId}}
+Content-Type: application/json
+
+{
+  "description": "Compra cancelada",
+  "amount": 250.90,
+  "date": "2026-09-03",
+  "type": "EXPENSE",
+  "status": "CANCELLED",
+  "categoryId": "{{categoryId}}",
+  "accountId": "{{accountId}}",
+  "userId": "{{userId}}"
+}
+
+### OpenAPI JSON
+GET http://localhost:8080/v3/api-docs

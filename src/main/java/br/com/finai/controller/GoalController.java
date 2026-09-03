@@ -1,5 +1,6 @@
 package br.com.finai.controller;
 
+import br.com.finai.config.StandardApiResponses;
 import br.com.finai.dto.goal.GoalRequest;
 import br.com.finai.dto.goal.GoalResponse;
 import br.com.finai.service.GoalService;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/goals")
 @Tag(name = "Metas", description = "Metas de economia e acompanhamento do progresso")
+@StandardApiResponses
 public class GoalController {
 
     private final GoalService service;

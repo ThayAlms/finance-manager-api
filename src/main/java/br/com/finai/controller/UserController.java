@@ -1,5 +1,6 @@
 package br.com.finai.controller;
 
+import br.com.finai.config.StandardApiResponses;
 import br.com.finai.dto.user.UserRequest;
 import br.com.finai.dto.user.UserResponse;
 import br.com.finai.service.UserService;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/users")
 @Tag(name = "Usuários", description = "Cadastro e manutenção de usuários")
+@StandardApiResponses
 public class UserController {
 
     private final UserService service;

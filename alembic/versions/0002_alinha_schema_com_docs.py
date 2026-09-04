@@ -47,7 +47,7 @@ def constraint_name(table: str, column: str, contype: str) -> str:
             FROM pg_constraint c
             JOIN pg_attribute a
               ON a.attrelid = c.conrelid AND a.attnum = ANY (c.conkey)
-            WHERE c.conrelid = :table::regclass
+            WHERE c.conrelid = CAST(:table AS regclass)
               AND c.contype = :contype
               AND a.attname = :column
             LIMIT 1

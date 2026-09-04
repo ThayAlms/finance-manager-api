@@ -26,7 +26,7 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Notas internas de planejamento (nao sao entregavel do CP1)
+# Notas internas de planejamento (nao vao para o repositorio)
 planejamento/
 
 # Config local de ferramenta (Claude Code)

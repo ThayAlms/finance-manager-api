@@ -184,14 +184,47 @@ coluna é definida na seção 4.
 
 | Origem | Destino | Cardinalidade | ON DELETE | Motivo |
 |---|---|---|---|---|
-| `conta.usuario_id` | `usuario.id` | N:1 | CASCADE | Não há endpoint de excluir usuário |
-| `categoria.usuario_id` | `usuario.id` | N:1 | CASCADE | Idem |
-| `meta.usuario_id` | `usuario.id` | N:1 | CASCADE | Idem |
+| `conta.usuario_id` | `usuario.id` | N:1 | **RESTRICT** | Não apagar histórico em cascata |
+| `categoria.usuario_id` | `usuario.id` | N:1 | **RESTRICT** | Idem |
+| `meta.usuario_id` | `usuario.id` | N:1 | **RESTRICT** | Idem |
 | `transacao.conta_id` | `conta.id` | N:1 | **RESTRICT** | RN10 |
 | `transacao.categoria_id` | `categoria.id` | N:1 | **RESTRICT** | RN08 |
 
 Leitura: um usuário tem N contas, N categorias personalizadas e N metas.
 Uma conta tem N transações. Uma categoria classifica N transações.
+
+### Por que RESTRICT também nas FKs de `usuario`
+
+`CASCADE` seria o reflexo natural aqui — "apagou o usuário, apagou o que é
+dele" — e **não funciona**. `DELETE FROM usuario` cascatearia para `conta`, o
+cascade tentaria remover as linhas de `conta`, e aí bateria no `RESTRICT` de
+`transacao.conta_id`:
+
+```
+ERROR:  update or delete on table "conta" violates foreign key constraint
+        fk_transacao_conta on table "transacao"
+```
+
+A operação inteira aborta. Na prática, o CASCADE só surtiria efeito para
+usuário sem nenhuma transação — justamente aquele cujos dados não fazem falta.
+Para todos os outros, o comando falharia. CASCADE que funciona ou não conforme
+o conteúdo da tabela é pior que CASCADE nenhum: quem lê o modelo acredita que a
+exclusão em cascata existe e escreve código contando com ela.
+
+A saída oposta — pôr `CASCADE` também em `transacao` — foi descartada: faria
+`DELETE FROM conta` apagar o extrato em silêncio, que é exatamente o que a RN10
+proíbe, e tiraria do banco a garantia da RN08 e da RN10, que hoje é a própria
+FK.
+
+`RESTRICT` em tudo deixa o modelo coerente com a R08 (sem soft delete, exclusão
+é definitiva) e com o princípio das RN08 e RN10: **o banco nunca apaga
+histórico financeiro por efeito colateral**.
+
+**Se um dia existir exclusão de conta de usuário**, ela vira uma operação
+explícita no service, dentro de uma transação, nesta ordem: `transacao` →
+`conta` / `categoria` / `meta` → `usuario`. É mais código que um CASCADE, mas é
+código que aparece no diff e passa por review — apagar toda a vida financeira
+de alguém não deveria ser efeito colateral de uma linha de DDL.
 
 ### Por que `transacao` não tem `usuario_id`
 
@@ -381,8 +414,9 @@ O arquivo é `docs/der.png`. Como ler:
 - Retângulo é tabela. `PK` é chave primária, `FK` é chave estrangeira.
 - O pé-de-galinha fica no lado **N**: `usuario 1 ──< N conta` é "um usuário,
   várias contas".
-- `CASCADE` e `RESTRICT` na linha do relacionamento são a política de exclusão
-  da seção 3 — `RESTRICT` é o que sustenta a RN08 e a RN10.
+- `RESTRICT` em toda linha de relacionamento é a política de exclusão da seção
+  3: nenhuma exclusão se propaga sozinha, e é isso que sustenta a RN08 e a
+  RN10.
 - `NULL` ao lado do tipo marca coluna anulável. Só duas no modelo inteiro:
   `categoria.usuario_id` (RN16) e `meta.prazo`. Todo o resto é NOT NULL.
 - O rodapé cinza de cada tabela traz o que não é coluna: UNIQUE, índices
@@ -510,9 +544,9 @@ Table meta {
   }
 }
 
-Ref: conta.usuario_id > usuario.id [delete: cascade]
-Ref: categoria.usuario_id > usuario.id [delete: cascade]
-Ref: meta.usuario_id > usuario.id [delete: cascade]
+Ref: conta.usuario_id > usuario.id [delete: restrict]
+Ref: categoria.usuario_id > usuario.id [delete: restrict]
+Ref: meta.usuario_id > usuario.id [delete: restrict]
 Ref: transacao.conta_id > conta.id [delete: restrict]
 Ref: transacao.categoria_id > categoria.id [delete: restrict]
 ```

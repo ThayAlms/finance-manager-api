@@ -1,169 +1,106 @@
-# FinAI - Finance Manager API
+# CaixaLivre API
 
-API REST para controle financeiro pessoal, desenvolvida em Java 21 e Spring Boot. O sistema permite administrar usuários, categorias, contas, receitas, despesas e metas financeiras.
+API REST de gestão financeira para autônomos, freelancers e MEIs, desenvolvida em Python com FastAPI. O sistema separa finanças pessoais e do negócio e oferece controle de contas, categorias, transações e metas.
 
-## Visao geral
+> Projeto em construção.
 
-Cada recurso financeiro pertence a um usuário por meio de `userId`. As consultas de contas, categorias, transações e metas são filtradas pelo usuário informado, e as regras de negócio impedem relacionamentos entre dados de usuários diferentes.
+## O problema
 
-O projeto está preparado para desenvolvimento local com Docker Compose:
+Quem trabalha por conta própria costuma usar a mesma conta e o mesmo controle
+para o dinheiro da pessoa e o do negócio — quando existe algum controle. Daí
+não sai resposta para pergunta nenhuma: quanto sobrou do mês, quanto veio do
+negócio, quanto já foi guardado para uma meta. App genérico de finanças não
+resolve, porque não tem onde registrar essa separação.
 
-- PostgreSQL 16 para persistência dos dados;
-- Flyway para criar e versionar o schema;
-- API Spring Boot executada em um container Java 21;
-- volume Docker para manter os dados do banco entre reinícios.
+## A solução
 
-> A versão atual usa `userId` nas requisições para identificar o proprietário dos dados. Autenticação com login, token e autorização por usuário ainda não faz parte desta entrega.
+Uma API REST em que **toda conta e toda transação é marcada como PESSOAL ou
+NEGOCIO** — é esse recorte que sustenta o produto. Em cima disso, o usuário
+cadastra contas, classifica receitas e despesas por categoria, registra
+transações com filtro por período e tipo, define metas de economia e consulta
+um resumo do mês. O saldo nunca é um valor guardado em coluna: é sempre
+calculado a partir do histórico, para que não exista a possibilidade de
+divergir do extrato.
+
+Detalhes em [docs/escopo.md](docs/escopo.md).
 
 ## Entregas
 
-| Requisito | Implementação |
-|---|---|
-| Regras de negócio | Serviços, validações e [documentação funcional](docs/REGRAS_DE_NEGOCIO.md) |
-| Formato API | API REST/JSON versionada em `/api/v1` |
-| Backend | Java 21, Spring Boot, Spring Web e arquitetura em camadas |
-| Documentação | [Contrato da API](docs/API.md), [requisições de exemplo](docs/requests.http) e [checklist](docs/CHECKLIST_ENTREGA.md) |
-| Swagger | Swagger UI e contrato OpenAPI 3 |
-| Conexão com banco | PostgreSQL, Spring Data JPA, Flyway e Docker Compose |
+- [CP1 — 01/09/2026](CP1/README.md)
+- [CP2 — 06/10/2026](CP2/README.md)
+- [CP3 — 27/10/2026](CP3/README.md)
 
-## Integrantes
+## Stack
 
-- Thainá Almeida Santos — RM 569110
-- Vitor Barbosa Vitorino — RM 570475
-- Silvio Dela Libera Neto — RM 572632
+- Python 3.12, FastAPI e Uvicorn;
+- SQLAlchemy 2 e Alembic;
+- PostgreSQL 16;
+- Pydantic, JWT e BCrypt;
+- Pytest e HTTPX;
+- Docker e Docker Compose.
 
 ## Estrutura
 
 ```text
-src/main/java/br/com/finai/
-    controller/  endpoints HTTP e documentação OpenAPI
-    domain/      entidades e enums do domínio
-    dto/         objetos de entrada e saída da API
-    exception/   erros de negócio e tratamento global
-    repository/  acesso aos dados com Spring Data JPA
-    service/     regras de negócio e transações
-src/main/resources/
-    application.yml
-    db/migration/  scripts versionados do Flyway
-docs/          contrato, regras e materiais da entrega
+app/
+├── core/          configurações, banco, autenticação e erros
+├── models/        entidades e enums
+├── repositories/ consultas ao banco
+├── routers/       endpoints HTTP
+├── schemas/       contratos de entrada e saída
+├── services/      regras de negócio
+└── main.py        criação da aplicação
+alembic/           migrações e carga inicial
+tests/             testes automatizados
+docs/              regras, modelo de dados e API
+CP1, CP2, CP3/     listas de cada entrega
 ```
 
-## Regras de negócio
+## Como executar
 
-As regras funcionais, seus códigos e respostas HTTP estão centralizados em [REGRAS_DE_NEGOCIO.md](docs/REGRAS_DE_NEGOCIO.md).
-
-## Arquitetura
-
-```text
-Cliente HTTP
-    ↓
-Controller → DTO e validação
-    ↓
-Service → regras de negócio
-    ↓
-Repository → Spring Data JPA
-    ↓
-PostgreSQL → schema versionado pelo Flyway
-```
-
-Entidades persistidas:
-
-- `User`: proprietário dos dados;
-- `Category`: classificação de receitas e despesas;
-- `Account`: conta, carteira ou investimento e seu saldo;
-- `FinancialTransaction`: receita ou despesa;
-- `Goal`: meta financeira e progresso.
-
-## Tecnologias
-
-- Java 21;
-- Spring Boot 3.3.5;
-- Spring Web, Data JPA e Bean Validation;
-- PostgreSQL 16;
-- Flyway;
-- Springdoc OpenAPI/Swagger;
-- BCrypt;
-- Maven;
-- JUnit 5, MockMvc e H2 para testes;
-- Docker e Docker Compose.
-
-## Configuração
-
-Pré-requisitos: Docker Desktop com Docker Compose. Para executar a API fora do Docker, também são necessários JDK 21, Maven 3.9+ e PostgreSQL 16.
-
-| Variável | Padrão | Finalidade |
-|---|---|---|
-| `DB_NAME` | `finai` | Nome do banco |
-| `DB_HOST` | `localhost` | Servidor PostgreSQL |
-| `DB_PORT` | `5432` | Porta PostgreSQL |
-| `DB_USERNAME` | `finai` | Usuário do banco |
-| `DB_PASSWORD` | `finai` | Senha do banco |
-| `SERVER_PORT` | `8080` | Porta da API |
-
-O arquivo `.env.example` contém valores apenas para desenvolvimento. Credenciais reais não devem ser enviadas ao GitHub.
-
-## Execução
-
-API e PostgreSQL com Docker:
+O arquivo [COMANDOS.txt](COMANDOS.txt) explica cada comando. A forma mais simples é:
 
 ```bash
 docker compose up --build
 ```
 
-Somente PostgreSQL com Docker e API pelo Maven:
+Endereços locais:
 
-```bash
-docker compose up -d postgres
-mvn spring-boot:run
-```
+- API: `http://localhost:8000`
+- Swagger UI: `http://localhost:8000/docs`
+- OpenAPI JSON: `http://localhost:8000/openapi.json`
+- Saúde da aplicação: `http://localhost:8000/health`
 
-A API ficará disponível em `http://localhost:8080`.
+## Documentação
 
-Para verificar os containers:
+- [Escopo](docs/escopo.md)
+- [Regras de negócio](docs/regras-de-negocio.md)
+- [Modelo de dados](docs/modelo-dados.md)
+- [Diagrama entidade-relacionamento (DER)](docs/der.png)
+- [Endpoints e exemplos](docs/API.md)
+- [Decisões da integração](docs/DECISOES_DE_INTEGRACAO.md)
+- [Checklist da CP1](docs/CHECKLIST_ENTREGA.md)
 
-```bash
-docker compose ps
-```
+## Segurança e isolamento
 
-Para acompanhar os logs da API:
+O cadastro é público. Os demais recursos exigem o token JWT obtido em `POST /api/v1/auth/login`. O usuário é identificado pelo token; IDs de usuário enviados manualmente não são aceitos nos contratos financeiros.
 
-```bash
-docker compose logs -f api
-```
+## Banco
 
-Para parar os serviços sem remover os dados persistidos:
-
-```bash
-docker compose down
-```
-
-O `Dockerfile` usa uma etapa Maven para compilar o `.jar` e uma imagem final menor com Java 21 JRE. O `compose.yaml` conecta a API ao PostgreSQL pelo nome do serviço `postgres`.
-
-## API
-
-Os recursos disponíveis são usuários, categorias, contas, transações e metas, todos versionados em `/api/v1`. O contrato completo, a sequência recomendada de testes e o formato de erros estão em [docs/API.md](docs/API.md). Requisições prontas estão em [docs/requests.http](docs/requests.http).
-
-## Swagger
-
-Com a aplicação em execução:
-
-- Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-- OpenAPI JSON: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
-
-O Swagger documenta schemas, parâmetros, exemplos, respostas de sucesso e o formato padronizado dos erros `400`, `404`, `409` e `500`.
-
-## Banco de dados
-
-O PostgreSQL é configurado em `application.yml`. O Flyway cria e versiona as tabelas por meio de `src/main/resources/db/migration/V1__create_core_tables.sql`.
-
-O schema contém chaves primárias UUID, chaves estrangeiras, índices, unicidade e validações monetárias.
-
-Quando a API roda no Docker, a conexão usa `DB_HOST=postgres`. Quando a API roda diretamente na máquina, o banco deve ser acessado com `DB_HOST=localhost`.
+O PostgreSQL é versionado pelo Alembic. Na inicialização pelo Docker, `alembic upgrade head` cria as tabelas, índices, restrições e categorias padrão antes de iniciar a API.
 
 ## Testes
 
 ```bash
-mvn clean verify
+pytest -q
 ```
 
-Os testes verificam inicialização, migração, regras financeiras, validações, erros e publicação do OpenAPI. O mesmo comando é executado pelo GitHub Actions.
+Os testes cobrem autenticação, isolamento entre usuários, regras das transações, saldo calculado, erros e contrato OpenAPI.
+
+## Integrantes
+
+| Integrante | RM |
+|---|---|
+| Thainá Almeida Santos | 569110 |
+| Vitor Barbosa Vitorino | 570475 |
+| Silvio Dela Libera Neto | 572632 |

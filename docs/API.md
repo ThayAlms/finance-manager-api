@@ -1,46 +1,56 @@
-# Contrato e demonstração da API
+# API REST — CaixaLivre
 
-Base local: `http://localhost:8080/api/v1`
+Base local: `http://localhost:8000/api/v1`
 
-Documentação interativa: `http://localhost:8080/swagger-ui.html`
+Swagger: `http://localhost:8000/docs`
 
-Contrato OpenAPI em JSON: `http://localhost:8080/v3/api-docs`
+## Autenticação
 
-## Recursos
+1. Cadastre o usuário em `POST /usuarios`.
+2. Envie e-mail e senha para `POST /auth/login`.
+3. Use o token retornado como `Authorization: Bearer SEU_TOKEN`.
 
-| Recurso | Rota | Operações |
+O usuário dos recursos financeiros é sempre obtido do token.
+
+## Endpoints
+
+| Método | Endpoint | Operação |
 |---|---|---|
-| Usuários | `/users` | listar, consultar, criar, atualizar e excluir |
-| Categorias | `/categories` | listar por usuário, consultar, criar, atualizar e excluir |
-| Contas | `/accounts` | listar por usuário, consultar, criar, atualizar e excluir |
-| Transações | `/transactions` | listar por usuário/período, consultar, criar, atualizar e excluir |
-| Metas | `/goals` | listar por usuário, consultar, criar, atualizar e excluir |
+| `POST` | `/usuarios` | Cadastrar usuário |
+| `GET` | `/usuarios/me` | Consultar perfil autenticado |
+| `PUT` | `/usuarios/me` | Atualizar perfil autenticado |
+| `POST` | `/auth/login` | Obter token JWT |
+| `GET` | `/categorias` | Listar categorias do sistema e pessoais |
+| `POST` | `/categorias` | Criar categoria pessoal |
+| `GET` | `/categorias/{id}` | Consultar categoria |
+| `PUT` | `/categorias/{id}` | Atualizar categoria pessoal |
+| `DELETE` | `/categorias/{id}` | Excluir categoria sem transações |
+| `GET` | `/contas` | Listar contas com saldo calculado |
+| `POST` | `/contas` | Criar conta |
+| `GET` | `/contas/{id}` | Consultar conta e saldo |
+| `PUT` | `/contas/{id}` | Atualizar conta sem alterar saldo inicial |
+| `DELETE` | `/contas/{id}` | Excluir conta sem transações |
+| `GET` | `/transacoes?inicio=AAAA-MM-DD&fim=AAAA-MM-DD` | Listar por período |
+| `POST` | `/transacoes` | Criar transação |
+| `GET` | `/transacoes/{id}` | Consultar transação |
+| `PUT` | `/transacoes/{id}` | Atualizar transação |
+| `DELETE` | `/transacoes/{id}` | Excluir transação |
+| `GET` | `/metas` | Listar metas e progresso |
+| `POST` | `/metas` | Criar meta |
+| `GET` | `/metas/{id}` | Consultar meta |
+| `PUT` | `/metas/{id}` | Atualizar meta |
+| `DELETE` | `/metas/{id}` | Excluir meta |
 
-## Sequência de demonstração
-
-1. Crie um usuário e guarde o `id` retornado.
-2. Crie uma categoria usando o `userId`.
-3. Crie uma conta usando o mesmo `userId`.
-4. Crie uma transação `COMPLETED` usando os três identificadores.
-5. Consulte a conta e confira a atualização do saldo.
-6. Atualize a transação para `CANCELLED` e confira a reversão do saldo.
-7. Tente excluir a conta e observe a resposta `409`, pois existe uma transação vinculada.
-
-O arquivo [`requests.http`](requests.http) contém as requisições prontas para clientes compatíveis com HTTP Client. O Swagger também permite executar o roteiro pelo navegador.
-
-## Formato de erro
+## Exemplo de erro
 
 ```json
 {
-  "timestamp": "2026-09-03T12:00:00-03:00",
-  "status": 400,
-  "error": "Bad Request",
-  "message": "Existem campos inválidos na requisição",
-  "path": "/api/v1/users",
-  "fieldErrors": {
-    "email": "deve ser um endereço de e-mail bem formado"
-  }
+  "timestamp": "2026-09-03T18:00:00+00:00",
+  "status": 422,
+  "error": "Unprocessable Entity",
+  "message": "A data da transação não pode estar no futuro",
+  "path": "/api/v1/transacoes"
 }
 ```
 
-Os valores possíveis dos enums e os schemas completos de entrada e saída estão publicados no contrato OpenAPI.
+Requisições completas estão em [`requests.http`](requests.http).

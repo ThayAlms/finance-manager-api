@@ -1,13 +1,11 @@
-# Checklist de entrega — FinAI
-
-Atualizado em: 03/09/2026
+# Checklist da CP1
 
 | Entrega | Estado | Evidência |
 |---|---|---|
-| Regras de negócio | Concluída | [`REGRAS_DE_NEGOCIO.md`](REGRAS_DE_NEGOCIO.md) e camada `service` |
-| Formato API REST | Concluída | Controllers versionados em `/api/v1`, DTOs JSON e códigos HTTP |
-| Backend | Concluída | Java 21, Spring Boot, validação, tratamento de erros e testes |
-| GitHub com README | Concluída | README atualizado e publicado na branch `main` do repositório `origin` |
-| Documentação | Concluída | README, regras, contrato/roteiro da API e diagrama de entidades |
-| Swagger/OpenAPI | Concluída | Springdoc, `/swagger-ui.html`, `/v3/api-docs` e teste automatizado do contrato |
-| Conexão com banco | Concluída | PostgreSQL, JPA, Flyway, Docker Compose e perfil H2 para testes |
+| Regras de negócio | Concluída | `docs/regras-de-negocio.md` e serviços |
+| Formato API | Concluída | REST/JSON em `/api/v1`, schemas e erros HTTP |
+| Backend | Concluída | FastAPI em arquitetura modular |
+| GitHub com README | Concluída na branch | README, integrantes, CI e histórico Git |
+| Documentação | Concluída | Regras, modelo, API, decisões e comandos |
+| Swagger | Concluída | `/docs` e `/openapi.json` |
+| Conexão com banco | Concluída | PostgreSQL, SQLAlchemy, Alembic e Compose |

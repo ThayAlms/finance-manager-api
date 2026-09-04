@@ -1,40 +1,33 @@
-HELP.md
-target/
-.tools/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
 
-### IntelliJ IDEA ###
-.idea/
-*.iws
-*.iml
-*.ipr
+.venv/
+venv/
+env/
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings/
-.springBeans
-.sts4-cache
-
-### Visual Studio Code ###
-.vscode/
-
-### Environment and secrets ###
 .env
-.env.*
-!.env.example
-*.pem
-*.key
 
-### Logs and operating systems ###
-*.log
+*.egg-info/
+build/
+dist/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+.vscode/
+.idea/
+*.swp
+
 .DS_Store
 Thumbs.db
 
-### Test and coverage output ###
-coverage/
-test-results/
+# Notas internas de planejamento (nao vao para o repositorio)
+planejamento/
+
+# Config local de ferramenta (Claude Code)
+.claude/

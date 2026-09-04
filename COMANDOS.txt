@@ -1,0 +1,69 @@
+CAIXALIVRE — COMANDOS DE EXECUÇÃO
+=================================
+
+Todos os comandos devem ser executados na pasta principal do projeto.
+
+1. SUBIR API E BANCO COM DOCKER
+
+docker compose up --build
+
+Cria as imagens, inicia PostgreSQL e API, executa as migrações do Alembic e
+mantém os logs visíveis no terminal. A API fica em http://localhost:8000.
+
+2. SUBIR EM SEGUNDO PLANO
+
+docker compose up --build -d
+
+Executa os mesmos serviços sem ocupar o terminal.
+
+3. VERIFICAR OS SERVIÇOS
+
+docker compose ps
+
+Mostra se API e PostgreSQL estão em execução e saudáveis.
+
+4. ACOMPANHAR LOGS DA API
+
+docker compose logs -f api
+
+Exibe os logs da API em tempo real. Pressione Ctrl+C apenas para sair dos logs.
+
+5. PARAR OS SERVIÇOS
+
+docker compose down
+
+Para e remove os containers, mas preserva os dados no volume do PostgreSQL.
+
+6. RECRIAR O BANCO DO ZERO (DESTRUTIVO)
+
+docker compose down -v
+docker compose up --build
+
+Remove também o volume e todos os dados locais. Use somente quando os dados
+puderem ser descartados.
+
+7. EXECUTAR SEM O CONTAINER DA API
+
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install -r requirements.txt
+copy .env.example .env
+docker compose up -d postgres
+alembic upgrade head
+uvicorn app.main:app --reload
+
+Cria um ambiente Python isolado, instala dependências, inicia somente o banco,
+aplica as migrações e executa a API com recarga automática.
+
+8. EXECUTAR OS TESTES
+
+pytest -q
+
+Valida autenticação, regras de negócio, isolamento dos usuários e OpenAPI.
+
+9. ENDEREÇOS
+
+API:          http://localhost:8000
+Swagger:      http://localhost:8000/docs
+OpenAPI JSON: http://localhost:8000/openapi.json
+Saúde:        http://localhost:8000/health

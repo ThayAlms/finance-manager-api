@@ -1,21 +1,40 @@
-name: Build e testes
+name: Testes Python
 
 on:
   push:
-    branches: ["main", "master"]
+    branches: ["main", "feature/python-vitor"]
   pull_request:
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: caixalivre
+          POSTGRES_USER: caixalivre
+          POSTGRES_PASSWORD: caixalivre
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U caixalivre -d caixalivre"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
-      - name: Baixar código
-        uses: actions/checkout@v4
-      - name: Configurar Java 21 e cache Maven
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          distribution: temurin
-          java-version: "21"
-          cache: maven
-      - name: Compilar e executar testes
-        run: mvn --batch-mode clean verify
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Validar migração PostgreSQL
+        env:
+          DATABASE_URL: postgresql+psycopg://caixalivre:caixalivre@localhost:5432/caixalivre
+          SECRET_KEY: chave-apenas-para-ci
+        run: alembic upgrade head
+      - name: Validar sintaxe e testes
+        run: |
+          python -m compileall -q app tests alembic
+          pytest -q

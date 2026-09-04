@@ -21,24 +21,30 @@ class TimestampMixin:
 
 class Usuario(TimestampMixin, Base):
     __tablename__ = "usuario"
+    __table_args__ = (
+        # RN02. UNIQUE de coluna e case-sensitive e deixaria Joao@x.com passar
+        # ao lado de joao@x.com; a unicidade real e sobre lower(email).
+        Index("uq_usuario_email", text("lower(email)"), unique=True),
+    )
 
     id: Mapped[int] = mapped_column(ID_TYPE, primary_key=True)
     nome: Mapped[str] = mapped_column(String(120), nullable=False)
-    email: Mapped[str] = mapped_column(String(180), nullable=False, unique=True)
+    email: Mapped[str] = mapped_column(String(180), nullable=False)
     senha_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
 
 class Conta(TimestampMixin, Base):
     __tablename__ = "conta"
     __table_args__ = (
-        Index("uq_conta_usuario_nome", "usuario_id", "nome", unique=True),
+        Index("uq_conta_usuario_nome", "usuario_id", text("lower(nome)"), unique=True),
         Index("idx_conta_usuario", "usuario_id"),
     )
 
     id: Mapped[int] = mapped_column(ID_TYPE, primary_key=True)
     usuario_id: Mapped[int] = mapped_column(
         ID_TYPE,
-        ForeignKey("usuario.id", ondelete="CASCADE"), nullable=False
+        ForeignKey("usuario.id", ondelete="RESTRICT", name="fk_conta_usuario"),
+        nullable=False,
     )
     nome: Mapped[str] = mapped_column(String(80), nullable=False)
     tipo: Mapped[TipoConta] = mapped_column(Enum(TipoConta, name="tipo_conta"), nullable=False)
@@ -55,14 +61,14 @@ class Categoria(TimestampMixin, Base):
         Index(
             "uq_categoria_usuario",
             "usuario_id",
-            "nome",
+            text("lower(nome)"),
             "tipo",
             unique=True,
             postgresql_where=text("usuario_id IS NOT NULL"),
         ),
         Index(
             "uq_categoria_sistema",
-            "nome",
+            text("lower(nome)"),
             "tipo",
             unique=True,
             postgresql_where=text("usuario_id IS NULL"),
@@ -73,7 +79,8 @@ class Categoria(TimestampMixin, Base):
     id: Mapped[int] = mapped_column(ID_TYPE, primary_key=True)
     usuario_id: Mapped[int | None] = mapped_column(
         ID_TYPE,
-        ForeignKey("usuario.id", ondelete="CASCADE"), nullable=True
+        ForeignKey("usuario.id", ondelete="RESTRICT", name="fk_categoria_usuario"),
+        nullable=True,
     )
     nome: Mapped[str] = mapped_column(String(60), nullable=False)
     tipo: Mapped[TipoMovimento] = mapped_column(
@@ -85,19 +92,22 @@ class Categoria(TimestampMixin, Base):
 class Transacao(TimestampMixin, Base):
     __tablename__ = "transacao"
     __table_args__ = (
-        CheckConstraint("valor > 0", name="ck_transacao_valor_positivo"),
-        Index("idx_transacao_conta_data", "conta_id", "data"),
+        CheckConstraint("valor > 0", name="valor_positivo"),
+        Index("idx_transacao_conta_data", "conta_id", text("data DESC")),
         Index("idx_transacao_categoria", "categoria_id"),
+        Index("idx_transacao_data", "data"),
     )
 
     id: Mapped[int] = mapped_column(ID_TYPE, primary_key=True)
     conta_id: Mapped[int] = mapped_column(
         ID_TYPE,
-        ForeignKey("conta.id", ondelete="RESTRICT"), nullable=False
+        ForeignKey("conta.id", ondelete="RESTRICT", name="fk_transacao_conta"),
+        nullable=False,
     )
     categoria_id: Mapped[int] = mapped_column(
         ID_TYPE,
-        ForeignKey("categoria.id", ondelete="RESTRICT"), nullable=False
+        ForeignKey("categoria.id", ondelete="RESTRICT", name="fk_transacao_categoria"),
+        nullable=False,
     )
     descricao: Mapped[str] = mapped_column(String(160), nullable=False)
     valor: Mapped[Decimal] = mapped_column(Numeric(14, 2), nullable=False)
@@ -115,15 +125,19 @@ class Transacao(TimestampMixin, Base):
 class Meta(TimestampMixin, Base):
     __tablename__ = "meta"
     __table_args__ = (
-        CheckConstraint("valor_meta > 0", name="ck_meta_valor_positivo"),
-        CheckConstraint("valor_atual >= 0", name="ck_meta_atual_nao_negativo"),
+        CheckConstraint("valor_meta > 0", name="valor_positivo"),
+        CheckConstraint("valor_atual >= 0", name="atual_nao_negativo"),
+        # Duas metas de mesmo nome sao clique duplo ou erro de digitacao, e
+        # deixam o usuario com duas barras de progresso pela metade.
+        Index("uq_meta_usuario_nome", "usuario_id", text("lower(nome)"), unique=True),
         Index("idx_meta_usuario", "usuario_id"),
     )
 
     id: Mapped[int] = mapped_column(ID_TYPE, primary_key=True)
     usuario_id: Mapped[int] = mapped_column(
         ID_TYPE,
-        ForeignKey("usuario.id", ondelete="CASCADE"), nullable=False
+        ForeignKey("usuario.id", ondelete="RESTRICT", name="fk_meta_usuario"),
+        nullable=False,
     )
     nome: Mapped[str] = mapped_column(String(80), nullable=False)
     valor_meta: Mapped[Decimal] = mapped_column(Numeric(14, 2), nullable=False)

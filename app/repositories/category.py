@@ -1,4 +1,4 @@
-from sqlalchemy import or_, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
 from app.models import Categoria, TipoMovimento
@@ -32,7 +32,7 @@ def duplicate(
     query = select(Categoria).where(
         Categoria.usuario_id == usuario_id,
         Categoria.tipo == tipo,
-        Categoria.nome.ilike(nome),
+        func.lower(Categoria.nome) == nome.lower(),
     )
     if exclude_id is not None:
         query = query.where(Categoria.id != exclude_id)

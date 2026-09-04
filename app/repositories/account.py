@@ -23,7 +23,9 @@ def by_id_for_user(session: Session, conta_id: int, usuario_id: int) -> Conta | 
 def duplicate(
     session: Session, usuario_id: int, nome: str, exclude_id: int | None = None
 ) -> Conta | None:
-    query = select(Conta).where(Conta.usuario_id == usuario_id, Conta.nome.ilike(nome))
+    query = select(Conta).where(
+        Conta.usuario_id == usuario_id, func.lower(Conta.nome) == nome.lower()
+    )
     if exclude_id is not None:
         query = query.where(Conta.id != exclude_id)
     return session.scalar(query)

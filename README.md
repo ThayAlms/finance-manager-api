@@ -57,8 +57,9 @@ Endereços locais:
 
 ## Documentação
 
+- [Escopo](docs/escopo.md)
 - [Regras de negócio](docs/regras-de-negocio.md)
-- [Modelo de dados](docs/modelo-dados.md)
+- [Modelo de dados (DER)](docs/modelo-dados.md)
 - [Endpoints e exemplos](docs/API.md)
 - [Decisões da integração](docs/DECISOES_DE_INTEGRACAO.md)
 - [Checklist da CP1](docs/CHECKLIST_ENTREGA.md)

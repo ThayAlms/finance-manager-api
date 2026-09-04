@@ -2,11 +2,27 @@
 
 API REST de gestão financeira para autônomos, freelancers e MEIs, desenvolvida em Python com FastAPI. O sistema separa finanças pessoais e do negócio e oferece controle de contas, categorias, transações e metas.
 
-## Integrantes
+> Projeto em construção.
 
-- Thainá Almeida Santos — RM 569110
-- Vitor Barbosa Vitorino — RM 570475
-- Silvio Dela Libera Neto — RM 572632
+## O problema
+
+Quem trabalha por conta própria costuma usar a mesma conta e o mesmo controle
+para o dinheiro da pessoa e o do negócio — quando existe algum controle. Daí
+não sai resposta para pergunta nenhuma: quanto sobrou do mês, quanto veio do
+negócio, quanto já foi guardado para uma meta. App genérico de finanças não
+resolve, porque não tem onde registrar essa separação.
+
+## A solução
+
+Uma API REST em que **toda conta e toda transação é marcada como PESSOAL ou
+NEGOCIO** — é esse recorte que sustenta o produto. Em cima disso, o usuário
+cadastra contas, classifica receitas e despesas por categoria, registra
+transações com filtro por período e tipo, define metas de economia e consulta
+um resumo do mês. O saldo nunca é um valor guardado em coluna: é sempre
+calculado a partir do histórico, para que não exista a possibilidade de
+divergir do extrato.
+
+Detalhes em [docs/escopo.md](docs/escopo.md).
 
 ## Entregas
 
@@ -59,7 +75,8 @@ Endereços locais:
 
 - [Escopo](docs/escopo.md)
 - [Regras de negócio](docs/regras-de-negocio.md)
-- [Modelo de dados (DER)](docs/modelo-dados.md)
+- [Modelo de dados](docs/modelo-dados.md)
+- [Diagrama entidade-relacionamento (DER)](docs/der.png)
 - [Endpoints e exemplos](docs/API.md)
 - [Decisões da integração](docs/DECISOES_DE_INTEGRACAO.md)
 - [Checklist da CP1](docs/CHECKLIST_ENTREGA.md)
@@ -79,3 +96,11 @@ pytest -q
 ```
 
 Os testes cobrem autenticação, isolamento entre usuários, regras das transações, saldo calculado, erros e contrato OpenAPI.
+
+## Integrantes
+
+| Integrante | RM |
+|---|---|
+| Thainá Almeida Santos | 569110 |
+| Vitor Barbosa Vitorino | 570475 |
+| Silvio Dela Libera Neto | 572632 |

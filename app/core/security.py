@@ -1,14 +1,13 @@
 from datetime import datetime, timedelta, timezone
+from typing import Annotated
 
 import bcrypt
 import jwt
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import InvalidTokenError
-from sqlalchemy.orm import Session
-
 from app.core.config import settings
-from app.core.database import get_db
+from app.core.database import DbSession
 from app.core.errors import ApiException
 from app.models import Usuario
 from app.repositories import user as user_repository
@@ -35,8 +34,8 @@ def create_access_token(usuario_id: int) -> str:
 
 
 def get_current_user(
-    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
-    session: Session = Depends(get_db),
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)],
+    session: DbSession,
 ) -> Usuario:
     if credentials is None or credentials.scheme.lower() != "bearer":
         raise ApiException(401, "Token de acesso ausente")
@@ -53,3 +52,7 @@ def get_current_user(
     if usuario is None:
         raise ApiException(401, "Usuário do token não existe")
     return usuario
+
+
+# Alias usado nas rotas protegidas: `def rota(usuario: CurrentUser)`.
+CurrentUser = Annotated[Usuario, Depends(get_current_user)]

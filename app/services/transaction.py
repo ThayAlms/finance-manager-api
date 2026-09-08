@@ -3,7 +3,7 @@ from datetime import date
 from sqlalchemy.orm import Session
 
 from app.core.errors import not_found, unprocessable
-from app.models import Transacao, Usuario
+from app.models import Natureza, TipoMovimento, Transacao, Usuario
 from app.repositories import transaction as repository
 from app.schemas import TransacaoCreate, TransacaoResponse
 from app.services import account as account_service
@@ -41,11 +41,17 @@ def find(session: Session, transacao_id: int, usuario: Usuario) -> Transacao:
 
 
 def list_all(
-    session: Session, usuario: Usuario, inicio: date, fim: date
+    session: Session,
+    usuario: Usuario,
+    inicio: date,
+    fim: date,
+    tipo: TipoMovimento | None = None,
+    natureza: Natureza | None = None,
 ) -> list[TransacaoResponse]:
     if inicio > fim:
         unprocessable("A data inicial não pode ser posterior à data final")
-    return [response(item) for item in repository.all_by_user(session, usuario.id, inicio, fim)]
+    itens = repository.all_by_user(session, usuario.id, inicio, fim, tipo, natureza)
+    return [response(item) for item in itens]
 
 
 def create(

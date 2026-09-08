@@ -2,7 +2,7 @@ name: Testes Python
 
 on:
   push:
-    branches: ["main", "feature/python-vitor"]
+    branches: ["main"]
   pull_request:
 
 jobs:

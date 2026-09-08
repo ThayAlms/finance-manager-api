@@ -11,6 +11,7 @@
 - [x] Documentação
 - [x] Swagger
 - [x] Conexão com banco
+- [x] Trello com o planejamento
 
 ## Onde encontrar
 
@@ -22,4 +23,5 @@
 | GitHub com README | [`README.md`](../README.md) e [repositório](https://github.com/ThayAlms/finance-manager-api) |
 | Documentação | Pasta [`docs`](../docs) |
 | Swagger | `http://localhost:8000/docs` com a API em execução |
+| Trello | Seção **Planejamento** do [`README.md`](../README.md) |
 | Conexão com banco | [`database.py`](../app/core/database.py), [`alembic`](../alembic) e [`compose.yaml`](../compose.yaml) |

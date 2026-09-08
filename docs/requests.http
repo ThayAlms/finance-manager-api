@@ -85,5 +85,21 @@ Content-Type: application/json
   "prazo": "2026-12-31"
 }
 
-### OpenAPI
+### Listar todas as transações
+GET {{baseUrl}}/transacoes
+Authorization: Bearer {{token}}
+
+### Listar só as despesas do negócio em um período
+GET {{baseUrl}}/transacoes?inicio=2026-08-01&fim=2026-08-31&tipo=DESPESA&natureza=NEGOCIO
+Authorization: Bearer {{token}}
+
+### Resumo do mês corrente
+GET {{baseUrl}}/resumo
+Authorization: Bearer {{token}}
+
+### Resumo de um mês específico
+GET {{baseUrl}}/resumo?mes=9&ano=2026
+Authorization: Bearer {{token}}
+
+### Contrato OpenAPI
 GET http://localhost:8000/openapi.json

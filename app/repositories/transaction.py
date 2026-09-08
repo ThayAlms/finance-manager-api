@@ -3,12 +3,25 @@ from datetime import date
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
-from app.models import Conta, Transacao
+from app.models import Conta, Natureza, TipoMovimento, Transacao
 
 
 def all_by_user(
-    session: Session, usuario_id: int, inicio: date, fim: date
+    session: Session,
+    usuario_id: int,
+    inicio: date,
+    fim: date,
+    tipo: TipoMovimento | None = None,
+    natureza: Natureza | None = None,
 ) -> list[Transacao]:
+    """Transacoes das contas do usuario, da mais recente para a mais antiga.
+
+    `tipo` e `natureza` sao opcionais e se acumulam com o periodo. O filtro de
+    natureza usa `Transacao.natureza`, nao a da conta: e o mesmo criterio que
+    o /resumo aplica em receitas e despesas, entao filtrar por NEGOCIO aqui
+    devolve o conjunto que soma o total do negocio la. Filtrar pela conta
+    faria os dois numeros divergirem (RN14).
+    """
     query = (
         select(Transacao)
         .join(Transacao.conta)
@@ -19,6 +32,10 @@ def all_by_user(
         )
         .order_by(Transacao.data.desc(), Transacao.id.desc())
     )
+    if tipo is not None:
+        query = query.where(Transacao.tipo == tipo)
+    if natureza is not None:
+        query = query.where(Transacao.natureza == natureza)
     return list(session.scalars(query))
 
 

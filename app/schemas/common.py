@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class SchemaBase(BaseModel):
@@ -8,12 +8,32 @@ class SchemaBase(BaseModel):
 
 
 class ApiError(BaseModel):
+    """Corpo unico de erro da API. Toda falha responde neste formato."""
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "timestamp": "2026-09-07T18:00:00+00:00",
+                "status": 422,
+                "error": "Unprocessable Entity",
+                "message": "A data da transação não pode estar no futuro",
+                "path": "/api/v1/transacoes",
+            }
+        }
+    )
+
     timestamp: datetime
     status: int
     error: str
     message: str
     path: str
-    fieldErrors: dict[str, str] | None = None
+    fieldErrors: dict[str, str] | None = Field(
+        default=None,
+        description=(
+            "Presente apenas em falhas de validação de campo: mapeia o campo "
+            "para o motivo da recusa."
+        ),
+    )
 
 
 COMMON_RESPONSES = {

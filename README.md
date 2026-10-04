@@ -67,6 +67,8 @@ O arquivo [COMANDOS.txt](COMANDOS.txt) explica cada comando. A forma mais simple
 docker compose up --build
 ```
 
+Para uma avaliação guiada com credenciais, dados de demonstração e resultados esperados, consulte o [Guia de teste do professor](CP2/GUIA_TESTE_PROFESSOR.md).
+
 Endereços locais:
 
 - Aplicação web: `http://localhost:3000`

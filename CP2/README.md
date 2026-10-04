@@ -4,6 +4,7 @@
 
 - [Enunciado recebido](ENUNCIADO.md)
 - [Auditoria contra o barema](AUDITORIA_BAREMA.md)
+- [Guia de teste do professor](GUIA_TESTE_PROFESSOR.md)
 
 ## Entregáveis
 

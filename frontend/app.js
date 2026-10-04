@@ -234,9 +234,10 @@ async function renderTransactions() {
   const categoryOptions = state.categories.map((item) => `<option value="${item.id}" data-type="${item.tipo}">${escapeHtml(item.nome)} — ${item.tipo}</option>`).join("");
   $("#transactions-page").innerHTML = `
     <article class="panel import-panel">
-      <div class="panel-head"><div><p class="eyebrow green">Importação inteligente</p><h2>Importar extrato bancário</h2><p class="muted">Envie CSV ou OFX. A IA sugere categoria e separa pessoa física de negócio antes de gravar.</p></div></div>
+      <div class="panel-head"><div><p class="eyebrow green">Importação inteligente</p><h2>Importar extrato bancário</h2><p class="muted">Envie PDF, CSV ou OFX. A IA extrai os lançamentos, sugere categorias e separa pessoa física de negócio antes de gravar.</p></div></div>
       <form id="statement-form" class="inline-form import-form">
-        <label class="wide">Arquivo CSV ou OFX<input name="arquivo" type="file" accept=".csv,.ofx,.qfx,text/csv" required /></label>
+        <label class="wide">Arquivo PDF, CSV ou OFX<input name="arquivo" type="file" accept=".pdf,.csv,.ofx,.qfx,application/pdf,text/csv" required /></label>
+        <p class="wide form-warning">Privacidade: ao escolher PDF, o documento bancário completo será enviado ao Gemini para leitura multimodal. Revise se ele contém dados que você não deseja compartilhar.</p>
         <label>Nome da conta<input name="conta_nome" required maxlength="80" placeholder="Ex.: Banco Principal" /></label>
         <label>Tipo<select name="tipo_conta"><option>CORRENTE</option><option>POUPANCA</option><option>CARTEIRA</option></select></label>
         <label>Natureza padrão<select name="natureza_padrao"><option>PESSOAL</option><option>NEGOCIO</option></select></label>
@@ -266,13 +267,16 @@ async function analyzeStatement(event) {
   const form = event.currentTarget;
   const file = form.elements.arquivo.files[0];
   if (!file) return;
+  const isPdf = file.name.toLowerCase().endsWith(".pdf");
+  if (isPdf && !window.confirm("Este PDF bancário será enviado ao Gemini para análise. Deseja continuar?")) return;
   const button = form.querySelector("button");
   button.disabled = true;
   button.textContent = "Analisando…";
   try {
     const body = {
       arquivo_nome: file.name,
-      conteudo: await file.text(),
+      conteudo: isPdf ? await fileAsBase64(file) : await file.text(),
+      codificacao: isPdf ? "base64" : "texto",
       conta_nome: form.elements.conta_nome.value,
       tipo_conta: form.elements.tipo_conta.value,
       natureza_padrao: form.elements.natureza_padrao.value,
@@ -284,6 +288,15 @@ async function analyzeStatement(event) {
     toast(`${state.importPreview.total_linhas} lançamentos encontrados. Revise antes de confirmar.`);
   } catch (error) { toast(error.message, true); }
   finally { button.disabled = false; button.textContent = "Analisar extrato"; }
+}
+
+function fileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",", 2)[1]);
+    reader.onerror = () => reject(new Error("Não foi possível ler o PDF."));
+    reader.readAsDataURL(file);
+  });
 }
 
 function renderImportPreview() {

@@ -71,7 +71,7 @@ Diagrama em [der.png](der.png). Colunas, tipos, constraints e índices em
 - Endpoint de resumo financeiro (`/resumo`) e insights educativos (`/insights`).
 - Documentação interativa via Swagger/OpenAPI.
 - Frontend web responsivo com dashboard de controle.
-- Importação assistida de extratos CSV/OFX, com revisão antes da persistência.
+- Importação assistida de extratos PDF/CSV/OFX, com revisão antes da persistência.
 
 ## Fora do escopo
 

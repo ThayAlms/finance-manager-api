@@ -42,7 +42,7 @@ O usuário dos recursos financeiros é sempre obtido do token.
 | `DELETE` | `/metas/{id}` | Excluir meta |
 | `GET` | `/resumo?inicio=AAAA-MM-DD&fim=AAAA-MM-DD` | Obter totais e séries do dashboard |
 | `POST` | `/insights?inicio=AAAA-MM-DD&fim=AAAA-MM-DD` | Gerar análise financeira educativa |
-| `POST` | `/extratos/preview` | Ler CSV/OFX e sugerir classificações sem gravar |
+| `POST` | `/extratos/preview` | Ler PDF/CSV/OFX e sugerir classificações sem gravar |
 | `POST` | `/extratos/confirmar` | Gravar os lançamentos revisados e criar/reusar a conta |
 
 ## Resumo financeiro
@@ -69,11 +69,13 @@ Use `offset` e `limit` na listagem de transações. O cabeçalho de resposta `X-
 
 O fluxo ocorre em duas etapas:
 
-1. `POST /extratos/preview` recebe conteúdo textual CSV, OFX ou QFX, normaliza os lançamentos e sugere natureza e categoria.
+1. `POST /extratos/preview` recebe CSV/OFX/QFX como texto ou PDF em base64. Para PDF, o Gemini realiza leitura multimodal do documento; nos demais formatos, o backend normaliza os lançamentos antes da classificação.
 2. O usuário revisa as sugestões no frontend.
 3. `POST /extratos/confirmar` cria ou reutiliza a conta e grava somente os itens confirmados.
 
 Cada lançamento importado recebe um hash derivado de data, descrição e valor. O índice único por conta impede que o mesmo lançamento seja importado duas vezes. A IA nunca grava diretamente no banco.
+
+No PDF, use `codificacao: "base64"`; nos demais formatos, `codificacao: "texto"`. O limite adotado pela aplicação é 10 MB. Como o PDF completo é enviado ao Gemini, o frontend solicita confirmação explícita e a utilização deve respeitar a política de privacidade aplicável.
 
 ## Exemplo de erro
 

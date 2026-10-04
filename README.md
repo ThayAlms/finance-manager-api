@@ -22,9 +22,11 @@ um resumo do mês. O saldo nunca é um valor guardado em coluna: é sempre
 calculado a partir do histórico, para que não exista a possibilidade de
 divergir do extrato.
 
-Extratos CSV ou OFX podem ser analisados pelo Gemini para sugerir categoria e
-natureza PESSOAL/NEGOCIO. A aplicação sempre apresenta uma prévia revisável e
-só grava os lançamentos após confirmação do usuário.
+Extratos PDF, CSV ou OFX podem ser analisados pelo Gemini para sugerir categoria
+e natureza PESSOAL/NEGOCIO. A aplicação sempre apresenta uma prévia revisável e
+só grava os lançamentos após confirmação do usuário. CSV/OFX são normalizados
+localmente; para PDF, o usuário confirma o envio do documento completo ao Gemini,
+cuja leitura multimodal interpreta tabelas e fontes bancárias codificadas.
 
 Detalhes em [docs/escopo.md](docs/escopo.md).
 

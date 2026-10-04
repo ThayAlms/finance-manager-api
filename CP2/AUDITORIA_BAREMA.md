@@ -20,7 +20,7 @@ A implementação cobre tecnicamente os **8 critérios pontuados** do trecho de 
 | Otimização da API | Atendido | Saldo agregado sem N+1, filtros, `offset`, `limit`, `X-Total-Count` e índices adicionais | 0,5/0,5 |
 | Banco | Atendido | Migrações `0002` e `0003`, índices case-insensitive, agregações e deduplicação de extratos | 1,0/1,0 |
 | Documentação e Swagger | Atendido | README, `docs/API.md`, exemplos HTTP e schemas/response models do FastAPI | 0,5/0,5 |
-| Testes iniciais | Atendido | 11 testes aprovados, incluindo dashboard, filtros, normalização, importação e LLM | 1,0/1,0 |
+| Testes iniciais | Atendido | 12 testes aprovados, incluindo dashboard, filtros, normalização, importação multimodal e LLM | 1,0/1,0 |
 | Integração da LLM | Atendido | `POST /api/v1/insights`, importação inteligente, Gemini API validada em execução real, timeout e fallback | 1,0/1,0 |
 
 **Cobertura técnica estimada:** `8,5/8,5` nos valores exibidos no texto recebido. O asterisco restante indica somente a conferência visual final em navegador antes da apresentação.
@@ -31,12 +31,16 @@ A implementação cobre tecnicamente os **8 critérios pontuados** do trecho de 
 |---|---|
 | Modelo ou serviço | Gemini API; modelo configurável por `GEMINI_MODEL`, com padrão `gemini-3.8-flash` |
 | Finalidade | Produzir uma análise educativa e contextual dos resultados financeiros do período |
-| Dados enviados | Insights: resumo agregado. Importação: data, descrição, valor e tipo já extraídos localmente |
-| Dados não enviados | Senha, hash, JWT, e-mail, conteúdo bruto do arquivo e nome/número da conta |
+| Dados enviados | Insights: resumo agregado. CSV/OFX: lançamentos normalizados. PDF: documento completo após confirmação explícita, necessário para leitura visual |
+| Dados não enviados | Senha, hash, JWT, e-mail e credenciais da aplicação; no PDF, dados impressos no próprio documento podem ser processados pelo provedor |
 | Resposta obtida | Texto curto com até três observações práticas, marcado com `gerado_por_ia` e o modelo usado |
 | Uso no frontend | Exibição no card “Análise inteligente” do dashboard |
 | Limitações | Resposta não determinística, dependência do provedor, custo, latência e possibilidade de indisponibilidade |
 | Mitigações | Instruções restritivas, timeout, tratamento de falha, fallback local e aviso de caráter educativo |
+
+Validação prática: o PDF de 3 páginas em `CP2/Extratos Bancários.pdf` foi lido
+pelo Gemini em modo multimodal e produziu uma prévia estruturada com 16
+lançamentos. Nenhuma transação foi gravada durante essa validação.
 
 ## Otimizações para explicar na apresentação
 

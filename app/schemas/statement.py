@@ -1,5 +1,6 @@
 from datetime import date
 from decimal import Decimal
+from typing import Literal
 
 from pydantic import Field
 
@@ -9,7 +10,8 @@ from app.schemas.common import SchemaBase
 
 class ExtratoPreviewRequest(SchemaBase):
     arquivo_nome: str = Field(min_length=1, max_length=255)
-    conteudo: str = Field(min_length=1, max_length=1_500_000)
+    conteudo: str = Field(min_length=1, max_length=14_000_000)
+    codificacao: Literal["texto", "base64"] = "texto"
     conta_nome: str = Field(min_length=1, max_length=80)
     tipo_conta: TipoConta = TipoConta.CORRENTE
     natureza_padrao: Natureza = Natureza.PESSOAL

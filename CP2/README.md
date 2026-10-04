@@ -28,9 +28,9 @@
 | Otimização | Saldo das contas calculado em consulta agregada; filtros e paginação em transações |
 | Banco | Migrações [`0002_normalizacao_cp2.py`](../alembic/versions/0002_normalizacao_cp2.py) e [`0003_importacao_extratos.py`](../alembic/versions/0003_importacao_extratos.py) |
 | Documentação | README, documentação da API, exemplos HTTP e comandos atualizados |
-| Testes | 11 testes automatizados cobrindo CP1 e os fluxos novos da CP2 |
+| Testes | 12 testes automatizados cobrindo CP1 e os fluxos novos da CP2 |
 | LLM | `POST /api/v1/insights` via Gemini API, com timeout e fallback local |
-| Importação inteligente | Prévia CSV/OFX, classificação PF/PJ, revisão humana e deduplicação |
+| Importação inteligente | Prévia PDF/CSV/OFX, classificação PF/PJ, revisão humana e deduplicação |
 
 ## Critérios de aceite
 
@@ -44,12 +44,13 @@
 
 ## Validação realizada
 
-- `pytest -q`: **11 testes aprovados**.
+- `pytest -q`: **12 testes aprovados**.
 - `node --check frontend/app.js`: JavaScript válido.
 - `docker compose config --quiet`: configuração válida.
 - Builds Docker da API e do frontend concluídos.
 - PostgreSQL inicializado com Alembic em `0003 (head)`.
 - Smoke test em containers: saúde `UP`, frontend HTTP `200`, cadastro, login e resumo aprovados.
 - Gemini validado em chamada real para insights e classificação de extrato em PESSOAL/NEGÓCIO.
+- PDF real de 3 páginas validado por leitura multimodal: 16 lançamentos extraídos na prévia, sem persistência automática.
 
 > A conferência visual interativa deve ser repetida em um navegador antes da apresentação final, pois o ambiente de automação usado na implementação não disponibilizou uma superfície de navegador controlável.

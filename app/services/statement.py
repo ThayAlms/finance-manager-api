@@ -1,4 +1,6 @@
 import csv
+import base64
+import binascii
 import hashlib
 import io
 import json
@@ -36,6 +38,7 @@ DESCRIPTION_HEADERS = {
 AMOUNT_HEADERS = {"valor", "amount", "trnamt", "montante", "quantia"}
 CREDIT_HEADERS = {"credito", "credit", "entrada", "receita"}
 DEBIT_HEADERS = {"debito", "debit", "saida", "despesa"}
+MAX_PDF_BYTES = 10_000_000
 
 
 def _normalize(value: str) -> str:
@@ -318,17 +321,163 @@ def _gemini_classification(
         return {}, False, None, "Gemini indisponível; regras locais utilizadas."
 
 
+def _gemini_pdf_extraction(
+    encoded_pdf: str, categories: list[Categoria], default: Natureza
+) -> tuple[list[dict], dict[int, dict], str]:
+    if not settings.gemini_api_key:
+        unprocessable(
+            "A importação de PDF requer GEMINI_API_KEY; use CSV/OFX para análise local"
+        )
+    try:
+        pdf_bytes = base64.b64decode(encoded_pdf, validate=True)
+    except (binascii.Error, ValueError):
+        unprocessable("O conteúdo do PDF não está em base64 válido")
+    if len(pdf_bytes) > MAX_PDF_BYTES:
+        unprocessable("O PDF pode ter no máximo 10 MB")
+    if not pdf_bytes.startswith(b"%PDF-"):
+        unprocessable("O arquivo enviado não possui uma assinatura PDF válida")
+
+    allowed = [
+        {"id": category.id, "nome": category.nome, "tipo": category.tipo.value}
+        for category in categories
+    ]
+    schema = {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+                "data": {"type": "string"},
+                "descricao": {"type": "string"},
+                "valor_assinado": {"type": "number"},
+                "natureza": {"type": "string", "enum": ["PESSOAL", "NEGOCIO"]},
+                "categoria_id": {"type": "integer"},
+                "confianca": {"type": "number"},
+                "justificativa": {"type": "string"},
+            },
+            "required": [
+                "data",
+                "descricao",
+                "valor_assinado",
+                "natureza",
+                "categoria_id",
+                "confianca",
+                "justificativa",
+            ],
+        },
+    }
+    prompt = {
+        "tarefa": (
+            "Extraia todos os lançamentos reais deste extrato bancário brasileiro. "
+            "Ignore saldo anterior/final, totais, gráficos, cabeçalhos e notas. Não "
+            "duplique linhas. Use valor positivo para crédito/entrada e negativo para "
+            "débito/saída. Datas devem ser YYYY-MM-DD; quando o ano estiver apenas no "
+            "cabeçalho, aplique-o aos lançamentos. Classifique também cada lançamento: "
+            "NEGOCIO para atividade profissional, MEI ou pessoa jurídica e PESSOAL "
+            "para vida particular. Não invente dados ilegíveis."
+        ),
+        "natureza_padrao": default.value,
+        "categorias_permitidas": allowed,
+        "regra_categoria": "Use somente um id fornecido e compatível com crédito/débito.",
+    }
+    payload = {
+        "contents": [
+            {
+                "role": "user",
+                "parts": [
+                    {
+                        "inline_data": {
+                            "mime_type": "application/pdf",
+                            "data": encoded_pdf,
+                        }
+                    },
+                    {"text": json.dumps(prompt, ensure_ascii=False)},
+                ],
+            }
+        ],
+        "generationConfig": {
+            "temperature": 0.0,
+            "responseMimeType": "application/json",
+            "responseSchema": schema,
+        },
+    }
+    try:
+        response = httpx.post(
+            (
+                "https://generativelanguage.googleapis.com/v1beta/models/"
+                f"{settings.gemini_model}:generateContent"
+            ),
+            headers={
+                "x-goog-api-key": settings.gemini_api_key,
+                "Content-Type": "application/json",
+            },
+            json=payload,
+            timeout=settings.gemini_timeout_seconds,
+        )
+        response.raise_for_status()
+        body = response.json()
+        text = "".join(
+            part.get("text", "")
+            for candidate in body.get("candidates", [])
+            for part in candidate.get("content", {}).get("parts", [])
+        )
+        extracted = json.loads(text)
+        entries: list[dict] = []
+        classifications: dict[int, dict] = {}
+        for line, item in enumerate(extracted, start=1):
+            amount = Decimal(str(item["valor_assinado"]))
+            if amount == 0:
+                continue
+            normalized_line = len(entries) + 1
+            entries.append(
+                {
+                    "linha": normalized_line,
+                    "data": _parse_date(str(item["data"])),
+                    "descricao": str(item["descricao"]).strip()[:160],
+                    "valor_assinado": amount,
+                }
+            )
+            classifications[normalized_line] = {
+                "natureza": item["natureza"],
+                "categoria_id": item["categoria_id"],
+                "confianca": item["confianca"],
+                "justificativa": item["justificativa"],
+            }
+        return entries, classifications, body.get(
+            "modelVersion", settings.gemini_model
+        )
+    except (httpx.HTTPError, ValueError, KeyError, TypeError, InvalidOperation):
+        unprocessable(
+            "Não foi possível analisar o PDF com o Gemini. Confira a chave e tente novamente"
+        )
+
+
 def preview(
     session: Session, usuario: Usuario, request: ExtratoPreviewRequest
 ) -> ExtratoPreviewResponse:
     extension = request.arquivo_nome.rsplit(".", 1)[-1].lower()
+    categories = category_repository.visible_to(session, usuario.id)
+    ai_items: dict[int, dict] = {}
+    generated_by_ai = False
+    model = None
+    warning = None
     try:
         if extension == "csv":
+            if request.codificacao != "texto":
+                raise ValueError("CSV deve ser enviado como texto")
             entries = _csv_entries(request.conteudo)
         elif extension in {"ofx", "qfx"}:
+            if request.codificacao != "texto":
+                raise ValueError("OFX/QFX deve ser enviado como texto")
             entries = _ofx_entries(request.conteudo)
+        elif extension == "pdf":
+            if request.codificacao != "base64":
+                raise ValueError("PDF deve ser enviado em base64")
+            entries, ai_items, model = _gemini_pdf_extraction(
+                request.conteudo, categories, request.natureza_padrao
+            )
+            generated_by_ai = True
         else:
-            unprocessable("Formato não suportado. Envie um arquivo CSV, OFX ou QFX")
+            unprocessable("Formato não suportado. Envie CSV, OFX, QFX ou PDF")
     except (csv.Error, UnicodeError, ValueError) as exc:
         unprocessable(f"Não foi possível ler o extrato: {exc}")
 
@@ -337,7 +486,6 @@ def preview(
     if len(entries) > 500:
         unprocessable("O extrato pode conter no máximo 500 lançamentos")
 
-    categories = category_repository.visible_to(session, usuario.id)
     account = account_repository.by_name_for_user(
         session, request.conta_nome, usuario.id
     )
@@ -347,9 +495,10 @@ def preview(
         if account
         else set()
     )
-    ai_items, generated_by_ai, model, warning = _gemini_classification(
-        entries, categories, request.natureza_padrao
-    )
+    if extension != "pdf":
+        ai_items, generated_by_ai, model, warning = _gemini_classification(
+            entries, categories, request.natureza_padrao
+        )
     categories_by_id = {category.id: category for category in categories}
 
     result = []

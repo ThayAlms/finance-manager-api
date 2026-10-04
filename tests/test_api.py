@@ -1,3 +1,4 @@
+import base64
 from datetime import date, timedelta
 
 from tests.conftest import register_and_login
@@ -305,3 +306,62 @@ def test_statement_preview_confirmation_and_duplicate_detection(
     )
     assert repeated.status_code == 200
     assert all(item["duplicada"] for item in repeated.json()["lancamentos"])
+
+
+def test_pdf_statement_is_sent_to_gemini_as_multimodal_document(
+    client, auth_headers, monkeypatch
+):
+    captured = {}
+
+    class FakeResponse:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {
+                "modelVersion": "gemini-pdf-teste",
+                "candidates": [
+                    {
+                        "content": {
+                            "parts": [
+                                {
+                                    "text": (
+                                        '[{"data":"2026-10-01","descricao":"PIX CLIENTE",'
+                                        '"valor_assinado":1500.00,"natureza":"NEGOCIO",'
+                                        '"categoria_id":1,"confianca":0.98,'
+                                        '"justificativa":"Recebimento de cliente"}]'
+                                    )
+                                }
+                            ]
+                        }
+                    }
+                ],
+            }
+
+    def fake_post(*args, **kwargs):
+        captured.update(kwargs["json"])
+        return FakeResponse()
+
+    monkeypatch.setattr("app.services.statement.settings.gemini_api_key", "chave-teste")
+    monkeypatch.setattr("app.services.statement.httpx.post", fake_post)
+    encoded = base64.b64encode(b"%PDF-1.4\nconteudo-teste").decode()
+    response = client.post(
+        "/api/v1/extratos/preview",
+        headers=auth_headers,
+        json={
+            "arquivo_nome": "extrato.pdf",
+            "conteudo": encoded,
+            "codificacao": "base64",
+            "conta_nome": "Conta PDF",
+            "tipo_conta": "CORRENTE",
+            "natureza_padrao": "PESSOAL",
+        },
+    )
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["classificado_por_ia"] is True
+    assert body["modelo"] == "gemini-pdf-teste"
+    assert body["total_linhas"] == 1
+    assert body["lancamentos"][0]["natureza"] == "NEGOCIO"
+    pdf_part = captured["contents"][0]["parts"][0]["inline_data"]
+    assert pdf_part == {"mime_type": "application/pdf", "data": encoded}

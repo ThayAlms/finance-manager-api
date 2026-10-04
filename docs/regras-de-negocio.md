@@ -348,6 +348,22 @@ importação e índice único parcial em `(conta_id, import_hash)`.
 
 ---
 
+### RN19 — PDF exige Gemini e confirmação de envio
+
+PDFs bancários são analisados visualmente pelo Gemini porque a extração textual
+local pode perder tabelas ou produzir caracteres ilegíveis. Antes do envio, o
+frontend deve informar que o documento completo será processado pelo provedor e
+pedir confirmação explícita. O limite da aplicação é 10 MB. Sem chave configurada,
+o PDF é recusado; CSV/OFX continuam disponíveis com fallback local.
+
+**Por quê:** o documento pode conter agência, conta e outros dados bancários.
+Consentimento e limite de tamanho reduzem exposição e abuso acidental.
+
+**Onde:** formulário de importação, schema `ExtratoPreviewRequest` e service de
+importação.
+
+---
+
 ## Restrições relevantes
 
 Restrição não é regra de negócio. A regra diz como o sistema se comporta; a

@@ -68,13 +68,14 @@ Diagrama em [der.png](der.png). Colunas, tipos, constraints e índices em
 - Backend em FastAPI + PostgreSQL (SQLAlchemy 2 + Alembic para migrations).
 - Autenticação e autorização via JWT.
 - CRUD completo de conta, categoria, transação e meta.
-- Endpoint de resumo financeiro (`/resumo`).
+- Endpoint de resumo financeiro (`/resumo`) e insights educativos (`/insights`).
 - Documentação interativa via Swagger/OpenAPI.
+- Frontend web responsivo com dashboard de controle.
 
 ## Fora do escopo
 
 Cartão de crédito, transferência entre contas, recorrência/parcelamento,
-recuperação de senha, notificações, exportação e frontend ficam para versões
+recuperação de senha, notificações e exportação ficam para versões
 seguintes — o motivo de cada adiamento está na tabela **Restrições relevantes**
 de [regras-de-negocio.md](regras-de-negocio.md).
 

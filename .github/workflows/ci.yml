@@ -2,7 +2,7 @@ name: Testes Python
 
 on:
   push:
-    branches: ["main", "feature/python-vitor"]
+    branches: ["main", "feature/python-vitor", "checkpoint-2"]
   pull_request:
 
 jobs:
@@ -38,3 +38,7 @@ jobs:
         run: |
           python -m compileall -q app tests alembic
           pytest -q
+      - name: Validar frontend
+        run: |
+          node --check frontend/app.js
+          docker build -t caixalivre-frontend-test ./frontend

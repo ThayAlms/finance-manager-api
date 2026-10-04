@@ -30,7 +30,7 @@ O usuário dos recursos financeiros é sempre obtido do token.
 | `GET` | `/contas/{id}` | Consultar conta e saldo |
 | `PUT` | `/contas/{id}` | Atualizar conta sem alterar saldo inicial |
 | `DELETE` | `/contas/{id}` | Excluir conta sem transações |
-| `GET` | `/transacoes?inicio=AAAA-MM-DD&fim=AAAA-MM-DD` | Listar por período |
+| `GET` | `/transacoes?inicio=AAAA-MM-DD&fim=AAAA-MM-DD&tipo=DESPESA&natureza=PESSOAL&offset=0&limit=100` | Listar com filtros e paginação |
 | `POST` | `/transacoes` | Criar transação |
 | `GET` | `/transacoes/{id}` | Consultar transação |
 | `PUT` | `/transacoes/{id}` | Atualizar transação |
@@ -40,6 +40,28 @@ O usuário dos recursos financeiros é sempre obtido do token.
 | `GET` | `/metas/{id}` | Consultar meta |
 | `PUT` | `/metas/{id}` | Atualizar meta |
 | `DELETE` | `/metas/{id}` | Excluir meta |
+| `GET` | `/resumo?inicio=AAAA-MM-DD&fim=AAAA-MM-DD` | Obter totais e séries do dashboard |
+| `POST` | `/insights?inicio=AAAA-MM-DD&fim=AAAA-MM-DD` | Gerar análise financeira educativa |
+
+## Resumo financeiro
+
+`GET /resumo` devolve, para o período solicitado:
+
+- saldo atual somando todas as contas;
+- receitas, despesas, resultado e taxa de economia;
+- totais separados por natureza `PESSOAL` e `NEGOCIO`;
+- agrupamento por categoria;
+- evolução mensal.
+
+Todos os cálculos são limitados ao usuário identificado pelo JWT.
+
+## Insights
+
+`POST /insights` envia apenas o resumo agregado à OpenAI Responses API. Senha, token e lançamentos individuais não são enviados. Quando `OPENAI_API_KEY` não estiver configurada ou o provedor estiver indisponível, a resposta contém `gerado_por_ia: false` e uma análise local.
+
+## Paginação de transações
+
+Use `offset` e `limit` na listagem de transações. O cabeçalho de resposta `X-Total-Count` informa quantos registros correspondem aos filtros, antes da paginação.
 
 ## Exemplo de erro
 

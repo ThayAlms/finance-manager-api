@@ -3,11 +3,18 @@ from datetime import date
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
-from app.models import Conta, Transacao
+from app.models import Conta, Natureza, TipoMovimento, Transacao
 
 
 def all_by_user(
-    session: Session, usuario_id: int, inicio: date, fim: date
+    session: Session,
+    usuario_id: int,
+    inicio: date,
+    fim: date,
+    tipo: TipoMovimento | None = None,
+    natureza: Natureza | None = None,
+    offset: int = 0,
+    limit: int = 100,
 ) -> list[Transacao]:
     query = (
         select(Transacao)
@@ -19,7 +26,33 @@ def all_by_user(
         )
         .order_by(Transacao.data.desc(), Transacao.id.desc())
     )
+    if tipo is not None:
+        query = query.where(Transacao.tipo == tipo)
+    if natureza is not None:
+        query = query.where(Transacao.natureza == natureza)
+    query = query.offset(offset).limit(limit)
     return list(session.scalars(query))
+
+
+def count_by_user(
+    session: Session,
+    usuario_id: int,
+    inicio: date,
+    fim: date,
+    tipo: TipoMovimento | None = None,
+    natureza: Natureza | None = None,
+) -> int:
+    query = (
+        select(func.count())
+        .select_from(Transacao)
+        .join(Transacao.conta)
+        .where(Conta.usuario_id == usuario_id, Transacao.data.between(inicio, fim))
+    )
+    if tipo is not None:
+        query = query.where(Transacao.tipo == tipo)
+    if natureza is not None:
+        query = query.where(Transacao.natureza == natureza)
+    return session.scalar(query) or 0
 
 
 def by_id_for_user(session: Session, transacao_id: int, usuario_id: int) -> Transacao | None:

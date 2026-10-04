@@ -7,14 +7,20 @@ from app.repositories import transaction as transaction_repository
 from app.schemas import ContaCreate, ContaResponse, ContaUpdate
 
 
-def response(session: Session, item: Conta) -> ContaResponse:
+def response(
+    session: Session, item: Conta, saldo_atual=None
+) -> ContaResponse:
     return ContaResponse(
         id=item.id,
         nome=item.nome,
         tipo=item.tipo,
         natureza=item.natureza,
         saldo_inicial=item.saldo_inicial,
-        saldo_atual=repository.current_balance(session, item),
+        saldo_atual=(
+            repository.current_balance(session, item)
+            if saldo_atual is None
+            else saldo_atual
+        ),
         criado_em=item.criado_em,
     )
 
@@ -27,7 +33,10 @@ def find(session: Session, conta_id: int, usuario: Usuario) -> Conta:
 
 
 def list_all(session: Session, usuario: Usuario) -> list[ContaResponse]:
-    return [response(session, item) for item in repository.all_by_user(session, usuario.id)]
+    return [
+        response(session, item, saldo)
+        for item, saldo in repository.all_with_balance_by_user(session, usuario.id)
+    ]
 
 
 def create(session: Session, usuario: Usuario, request: ContaCreate) -> ContaResponse:

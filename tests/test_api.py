@@ -140,3 +140,115 @@ def test_goal_calculations(client, auth_headers):
     assert response.json()["valor_restante"] == "0.00"
     assert response.json()["progresso_percentual"] == "100.00"
     assert response.json()["atingida"] is True
+
+
+def test_dashboard_summary_filters_and_pagination(client, auth_headers):
+    categories = client.get("/api/v1/categorias", headers=auth_headers).json()
+    income = next(item for item in categories if item["tipo"] == "RECEITA")
+    expense = next(item for item in categories if item["tipo"] == "DESPESA")
+    account = client.post(
+        "/api/v1/contas",
+        headers=auth_headers,
+        json={
+            "nome": "Conta do dashboard",
+            "tipo": "CORRENTE",
+            "natureza": "NEGOCIO",
+            "saldo_inicial": "100.00",
+        },
+    ).json()
+    for category, movement_type, amount in (
+        (income, "RECEITA", "1000.00"),
+        (expense, "DESPESA", "250.00"),
+    ):
+        response = client.post(
+            "/api/v1/transacoes",
+            headers=auth_headers,
+            json={
+                "conta_id": account["id"],
+                "categoria_id": category["id"],
+                "descricao": f"Movimento {movement_type}",
+                "valor": amount,
+                "data": date.today().isoformat(),
+                "tipo": movement_type,
+            },
+        )
+        assert response.status_code == 201
+
+    query = f"inicio={date.today().replace(day=1)}&fim={date.today()}"
+    summary = client.get(f"/api/v1/resumo?{query}", headers=auth_headers)
+    assert summary.status_code == 200, summary.text
+    assert summary.json()["receitas"] == "1000.00"
+    assert summary.json()["despesas"] == "250.00"
+    assert summary.json()["resultado"] == "750.00"
+    assert summary.json()["saldo_total"] == "850.00"
+    assert summary.json()["taxa_economia"] == "75.00"
+    assert summary.json()["por_natureza"][1]["natureza"] == "NEGOCIO"
+    assert len(summary.json()["evolucao_mensal"]) == 1
+
+    filtered = client.get(
+        f"/api/v1/transacoes?{query}&tipo=DESPESA&limit=1",
+        headers=auth_headers,
+    )
+    assert filtered.status_code == 200
+    assert filtered.headers["X-Total-Count"] == "1"
+    assert len(filtered.json()) == 1
+    assert filtered.json()[0]["tipo"] == "DESPESA"
+
+
+def test_insight_uses_safe_local_fallback_without_api_key(client, auth_headers):
+    query = f"inicio={date.today().replace(day=1)}&fim={date.today()}"
+    response = client.post(f"/api/v1/insights?{query}", headers=auth_headers)
+    assert response.status_code == 200
+    assert response.json()["gerado_por_ia"] is False
+    assert "OPENAI_API_KEY" in response.json()["aviso"]
+
+
+def test_insight_reads_text_from_responses_api(client, auth_headers, monkeypatch):
+    class FakeResponse:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {
+                "model": "modelo-teste",
+                "output": [
+                    {
+                        "type": "message",
+                        "content": [
+                            {"type": "output_text", "text": "Mantenha seu planejamento mensal."}
+                        ],
+                    }
+                ],
+            }
+
+    monkeypatch.setattr("app.services.insight.settings.openai_api_key", "chave-teste")
+    monkeypatch.setattr("app.services.insight.httpx.post", lambda *args, **kwargs: FakeResponse())
+    query = f"inicio={date.today().replace(day=1)}&fim={date.today()}"
+    response = client.post(f"/api/v1/insights?{query}", headers=auth_headers)
+    assert response.status_code == 200
+    assert response.json() == {
+        "insight": "Mantenha seu planejamento mensal.",
+        "gerado_por_ia": True,
+        "modelo": "modelo-teste",
+        "aviso": None,
+    }
+
+
+def test_case_insensitive_account_and_goal_names_are_unique(client, auth_headers):
+    account = {
+        "nome": "Conta Principal",
+        "tipo": "CORRENTE",
+        "natureza": "PESSOAL",
+    }
+    assert client.post("/api/v1/contas", headers=auth_headers, json=account).status_code == 201
+    duplicate_account = client.post(
+        "/api/v1/contas", headers=auth_headers, json={**account, "nome": "conta principal"}
+    )
+    assert duplicate_account.status_code == 409
+
+    goal = {"nome": "Reserva", "valor_meta": "5000.00"}
+    assert client.post("/api/v1/metas", headers=auth_headers, json=goal).status_code == 201
+    duplicate_goal = client.post(
+        "/api/v1/metas", headers=auth_headers, json={**goal, "nome": "reserva"}
+    )
+    assert duplicate_goal.status_code == 409

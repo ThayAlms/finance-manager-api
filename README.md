@@ -1,6 +1,6 @@
 # CaixaLivre API
 
-API REST de gestão financeira para autônomos, freelancers e MEIs, desenvolvida em Python com FastAPI. O sistema separa finanças pessoais e do negócio e oferece controle de contas, categorias, transações e metas.
+Aplicação web de gestão financeira para autônomos, freelancers e MEIs. O sistema separa finanças pessoais e do negócio e oferece dashboard, controle de contas, categorias, transações, metas e insights financeiros educativos.
 
 > Projeto em construção.
 
@@ -37,7 +37,9 @@ Detalhes em [docs/escopo.md](docs/escopo.md).
 - PostgreSQL 16;
 - Pydantic, JWT e BCrypt;
 - Pytest e HTTPX;
-- Docker e Docker Compose.
+- Docker e Docker Compose;
+- HTML, CSS, JavaScript e Nginx no frontend;
+- OpenAI Responses API para insights opcionais.
 
 ## Estrutura
 
@@ -50,6 +52,7 @@ app/
 ├── schemas/       contratos de entrada e saída
 ├── services/      regras de negócio
 └── main.py        criação da aplicação
+frontend/         aplicação web e configuração do Nginx
 alembic/           migrações e carga inicial
 tests/             testes automatizados
 docs/              regras, modelo de dados e API
@@ -66,6 +69,7 @@ docker compose up --build
 
 Endereços locais:
 
+- Aplicação web: `http://localhost:3000`
 - API: `http://localhost:8000`
 - Swagger UI: `http://localhost:8000/docs`
 - OpenAPI JSON: `http://localhost:8000/openapi.json`
@@ -79,7 +83,7 @@ Endereços locais:
 - [Diagrama entidade-relacionamento (DER)](docs/der.png)
 - [Endpoints e exemplos](docs/API.md)
 - [Decisões da integração](docs/DECISOES_DE_INTEGRACAO.md)
-- [Checklist da CP1](docs/CHECKLIST_ENTREGA.md)
+- [Checklist da CP2](CP2/README.md)
 
 ## Segurança e isolamento
 
@@ -95,7 +99,11 @@ O PostgreSQL é versionado pelo Alembic. Na inicialização pelo Docker, `alembi
 pytest -q
 ```
 
-Os testes cobrem autenticação, isolamento entre usuários, regras das transações, saldo calculado, erros e contrato OpenAPI.
+Os testes cobrem autenticação, isolamento entre usuários, regras das transações, saldo calculado, dashboard, filtros, normalização, insights, erros e contrato OpenAPI.
+
+## Insights com IA
+
+Configure `OPENAI_API_KEY` no arquivo `.env` para habilitar análises geradas por IA. A integração usa a Responses API e envia somente o resumo financeiro agregado do usuário. Sem uma chave, o endpoint continua respondendo com uma análise local determinística.
 
 ## Integrantes
 

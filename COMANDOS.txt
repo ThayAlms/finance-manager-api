@@ -7,8 +7,9 @@ Todos os comandos devem ser executados na pasta principal do projeto.
 
 docker compose up --build
 
-Cria as imagens, inicia PostgreSQL e API, executa as migrações do Alembic e
-mantém os logs visíveis no terminal. A API fica em http://localhost:8000.
+Cria as imagens, inicia PostgreSQL, API e frontend, executa as migrações do
+Alembic e mantém os logs visíveis no terminal. A aplicação fica em
+http://localhost:3000 e a API em http://localhost:8000.
 
 2. SUBIR EM SEGUNDO PLANO
 
@@ -20,7 +21,7 @@ Executa os mesmos serviços sem ocupar o terminal.
 
 docker compose ps
 
-Mostra se API e PostgreSQL estão em execução e saudáveis.
+Mostra se frontend, API e PostgreSQL estão em execução.
 
 4. ACOMPANHAR LOGS DA API
 
@@ -59,10 +60,12 @@ aplica as migrações e executa a API com recarga automática.
 
 pytest -q
 
-Valida autenticação, regras de negócio, isolamento dos usuários e OpenAPI.
+Valida autenticação, regras de negócio, isolamento, dashboard, filtros,
+normalização, insights e OpenAPI.
 
 9. ENDEREÇOS
 
+Frontend:     http://localhost:3000
 API:          http://localhost:8000
 Swagger:      http://localhost:8000/docs
 OpenAPI JSON: http://localhost:8000/openapi.json

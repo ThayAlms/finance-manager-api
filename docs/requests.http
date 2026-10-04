@@ -1,6 +1,8 @@
 @baseUrl = http://localhost:8000/api/v1
 @token = COLE_AQUI_O_ACCESS_TOKEN
 @categoriaId = ID_DA_CATEGORIA
+@inicio = 2026-10-01
+@fim = 2026-10-31
 @contaId = ID_DA_CONTA
 
 ### Saúde
@@ -84,6 +86,18 @@ Content-Type: application/json
   "valor_atual": 2500.00,
   "prazo": "2026-12-31"
 }
+
+### Listar despesas pessoais com paginação
+GET {{baseUrl}}/transacoes?inicio={{inicio}}&fim={{fim}}&tipo=DESPESA&natureza=PESSOAL&offset=0&limit=20
+Authorization: Bearer {{token}}
+
+### Resumo do dashboard
+GET {{baseUrl}}/resumo?inicio={{inicio}}&fim={{fim}}
+Authorization: Bearer {{token}}
+
+### Insight financeiro (usa fallback local sem OPENAI_API_KEY)
+POST {{baseUrl}}/insights?inicio={{inicio}}&fim={{fim}}
+Authorization: Bearer {{token}}
 
 ### OpenAPI
 GET http://localhost:8000/openapi.json

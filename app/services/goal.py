@@ -2,7 +2,7 @@ from decimal import Decimal, ROUND_HALF_UP
 
 from sqlalchemy.orm import Session
 
-from app.core.errors import not_found
+from app.core.errors import conflict, not_found
 from app.models import Meta, Usuario
 from app.repositories import goal as repository
 from app.schemas import MetaCreate, MetaResponse
@@ -38,6 +38,8 @@ def list_all(session: Session, usuario: Usuario) -> list[MetaResponse]:
 
 
 def create(session: Session, usuario: Usuario, request: MetaCreate) -> MetaResponse:
+    if repository.duplicate(session, usuario.id, request.nome):
+        conflict("Já existe uma meta com este nome")
     item = Meta(usuario_id=usuario.id, **request.model_dump())
     session.add(item)
     session.commit()
@@ -49,6 +51,8 @@ def update(
     session: Session, usuario: Usuario, meta_id: int, request: MetaCreate
 ) -> MetaResponse:
     item = find(session, meta_id, usuario)
+    if repository.duplicate(session, usuario.id, request.nome, item.id):
+        conflict("Já existe uma meta com este nome")
     for field, value in request.model_dump().items():
         setattr(item, field, value)
     session.commit()

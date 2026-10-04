@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.core.security import get_current_user
-from app.models import Usuario
+from app.models import Natureza, TipoMovimento, Usuario
 from app.schemas import TransacaoCreate, TransacaoResponse
 from app.services import transaction as service
 
@@ -14,12 +14,22 @@ router = APIRouter(prefix="/transacoes", tags=["Transações"])
 
 @router.get("", response_model=list[TransacaoResponse], summary="Listar transações por período")
 def list_all(
+    response: Response,
     inicio: date = Query(default=date(1900, 1, 1)),
     fim: date = Query(default=date(2999, 12, 31)),
+    tipo: TipoMovimento | None = Query(default=None),
+    natureza: Natureza | None = Query(default=None),
+    offset: int = Query(default=0, ge=0),
+    limit: int = Query(default=100, ge=1, le=500),
     usuario: Usuario = Depends(get_current_user),
     session: Session = Depends(get_db),
 ) -> list[TransacaoResponse]:
-    return service.list_all(session, usuario, inicio, fim)
+    response.headers["X-Total-Count"] = str(
+        service.count(session, usuario, inicio, fim, tipo, natureza)
+    )
+    return service.list_all(
+        session, usuario, inicio, fim, tipo, natureza, offset, limit
+    )
 
 
 @router.get("/{transacao_id}", response_model=TransacaoResponse)

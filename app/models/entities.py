@@ -21,17 +21,18 @@ class TimestampMixin:
 
 class Usuario(TimestampMixin, Base):
     __tablename__ = "usuario"
+    __table_args__ = (Index("uq_usuario_email_lower", text("lower(email)"), unique=True),)
 
     id: Mapped[int] = mapped_column(ID_TYPE, primary_key=True)
     nome: Mapped[str] = mapped_column(String(120), nullable=False)
-    email: Mapped[str] = mapped_column(String(180), nullable=False, unique=True)
+    email: Mapped[str] = mapped_column(String(180), nullable=False)
     senha_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
 
 class Conta(TimestampMixin, Base):
     __tablename__ = "conta"
     __table_args__ = (
-        Index("uq_conta_usuario_nome", "usuario_id", "nome", unique=True),
+        Index("uq_conta_usuario_nome", "usuario_id", text("lower(nome)"), unique=True),
         Index("idx_conta_usuario", "usuario_id"),
     )
 
@@ -55,14 +56,14 @@ class Categoria(TimestampMixin, Base):
         Index(
             "uq_categoria_usuario",
             "usuario_id",
-            "nome",
+            text("lower(nome)"),
             "tipo",
             unique=True,
             postgresql_where=text("usuario_id IS NOT NULL"),
         ),
         Index(
             "uq_categoria_sistema",
-            "nome",
+            text("lower(nome)"),
             "tipo",
             unique=True,
             postgresql_where=text("usuario_id IS NULL"),
@@ -118,6 +119,7 @@ class Meta(TimestampMixin, Base):
         CheckConstraint("valor_meta > 0", name="ck_meta_valor_positivo"),
         CheckConstraint("valor_atual >= 0", name="ck_meta_atual_nao_negativo"),
         Index("idx_meta_usuario", "usuario_id"),
+        Index("uq_meta_usuario_nome", "usuario_id", text("lower(nome)"), unique=True),
     )
 
     id: Mapped[int] = mapped_column(ID_TYPE, primary_key=True)

@@ -18,9 +18,9 @@ class Settings(BaseSettings):
 
     cors_origins: str = "http://localhost:3000,http://localhost:5173"
 
-    openai_api_key: str | None = None
-    openai_model: str = "gpt-6-astra"
-    openai_timeout_seconds: float = 20.0
+    gemini_api_key: str | None = None
+    gemini_model: str = "gemini-3.8-flash"
+    gemini_timeout_seconds: float = 45.0
 
     @property
     def allowed_origins(self) -> list[str]:

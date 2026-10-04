@@ -29,32 +29,45 @@ def _fallback(summary: ResumoResponse, warning: str) -> InsightResponse:
 
 
 def generate(summary: ResumoResponse) -> InsightResponse:
-    if not settings.openai_api_key:
-        return _fallback(summary, "OPENAI_API_KEY não configurada; análise local utilizada.")
+    if not settings.gemini_api_key:
+        return _fallback(summary, "GEMINI_API_KEY não configurada; análise local utilizada.")
 
     payload = {
-        "model": settings.openai_model,
-        "instructions": INSTRUCTIONS,
-        "input": json.dumps(summary.model_dump(mode="json"), ensure_ascii=False),
+        "system_instruction": {"parts": [{"text": INSTRUCTIONS}]},
+        "contents": [
+            {
+                "role": "user",
+                "parts": [
+                    {
+                        "text": json.dumps(
+                            summary.model_dump(mode="json"), ensure_ascii=False
+                        )
+                    }
+                ],
+            }
+        ],
+        "generationConfig": {"temperature": 0.2, "maxOutputTokens": 300},
     }
     try:
         response = httpx.post(
-            "https://api.openai.com/v1/responses",
+            (
+                "https://generativelanguage.googleapis.com/v1beta/models/"
+                f"{settings.gemini_model}:generateContent"
+            ),
             headers={
-                "Authorization": f"Bearer {settings.openai_api_key}",
+                "x-goog-api-key": settings.gemini_api_key,
                 "Content-Type": "application/json",
             },
             json=payload,
-            timeout=settings.openai_timeout_seconds,
+            timeout=settings.gemini_timeout_seconds,
         )
         response.raise_for_status()
         body = response.json()
         texts = [
-            content.get("text", "")
-            for item in body.get("output", [])
-            if item.get("type") == "message"
-            for content in item.get("content", [])
-            if content.get("type") == "output_text"
+            part.get("text", "")
+            for candidate in body.get("candidates", [])
+            for part in candidate.get("content", {}).get("parts", [])
+            if "text" in part
         ]
         insight = "\n".join(text for text in texts if text).strip()
         if not insight:
@@ -62,7 +75,7 @@ def generate(summary: ResumoResponse) -> InsightResponse:
         return InsightResponse(
             insight=insight,
             gerado_por_ia=True,
-            modelo=body.get("model", settings.openai_model),
+            modelo=body.get("modelVersion", settings.gemini_model),
         )
     except (httpx.HTTPError, ValueError, KeyError):
         return _fallback(summary, "Serviço de IA indisponível; análise local utilizada.")

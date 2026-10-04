@@ -195,12 +195,15 @@ def test_dashboard_summary_filters_and_pagination(client, auth_headers):
     assert filtered.json()[0]["tipo"] == "DESPESA"
 
 
-def test_insight_uses_safe_local_fallback_without_api_key(client, auth_headers):
+def test_insight_uses_safe_local_fallback_without_api_key(
+    client, auth_headers, monkeypatch
+):
+    monkeypatch.setattr("app.services.insight.settings.gemini_api_key", None)
     query = f"inicio={date.today().replace(day=1)}&fim={date.today()}"
     response = client.post(f"/api/v1/insights?{query}", headers=auth_headers)
     assert response.status_code == 200
     assert response.json()["gerado_por_ia"] is False
-    assert "OPENAI_API_KEY" in response.json()["aviso"]
+    assert "GEMINI_API_KEY" in response.json()["aviso"]
 
 
 def test_insight_reads_text_from_responses_api(client, auth_headers, monkeypatch):
@@ -210,18 +213,19 @@ def test_insight_reads_text_from_responses_api(client, auth_headers, monkeypatch
 
         def json(self):
             return {
-                "model": "modelo-teste",
-                "output": [
+                "modelVersion": "modelo-teste",
+                "candidates": [
                     {
-                        "type": "message",
-                        "content": [
-                            {"type": "output_text", "text": "Mantenha seu planejamento mensal."}
-                        ],
+                        "content": {
+                            "parts": [
+                                {"text": "Mantenha seu planejamento mensal."}
+                            ]
+                        },
                     }
                 ],
             }
 
-    monkeypatch.setattr("app.services.insight.settings.openai_api_key", "chave-teste")
+    monkeypatch.setattr("app.services.insight.settings.gemini_api_key", "chave-teste")
     monkeypatch.setattr("app.services.insight.httpx.post", lambda *args, **kwargs: FakeResponse())
     query = f"inicio={date.today().replace(day=1)}&fim={date.today()}"
     response = client.post(f"/api/v1/insights?{query}", headers=auth_headers)
@@ -252,3 +256,52 @@ def test_case_insensitive_account_and_goal_names_are_unique(client, auth_headers
         "/api/v1/metas", headers=auth_headers, json={**goal, "nome": "reserva"}
     )
     assert duplicate_goal.status_code == 409
+
+
+def test_statement_preview_confirmation_and_duplicate_detection(
+    client, auth_headers, monkeypatch
+):
+    monkeypatch.setattr("app.services.statement.settings.gemini_api_key", None)
+    csv_content = (
+        "Data;Descrição;Valor\n"
+        "01/10/2026;PIX CLIENTE ACME CNPJ;5000,00\n"
+        "02/10/2026;Compra mercado;-250,00\n"
+    )
+    payload = {
+        "arquivo_nome": "extrato-outubro.csv",
+        "conteudo": csv_content,
+        "conta_nome": "Conta importada",
+        "tipo_conta": "CORRENTE",
+        "natureza_padrao": "PESSOAL",
+    }
+    preview = client.post(
+        "/api/v1/extratos/preview", headers=auth_headers, json=payload
+    )
+    assert preview.status_code == 200, preview.text
+    body = preview.json()
+    assert body["total_linhas"] == 2
+    assert body["total_creditos"] == "5000.00"
+    assert body["total_debitos"] == "250.00"
+    assert body["classificado_por_ia"] is False
+    assert body["lancamentos"][0]["natureza"] == "NEGOCIO"
+
+    confirmation = client.post(
+        "/api/v1/extratos/confirmar",
+        headers=auth_headers,
+        json={
+            "conta_nome": body["conta_nome"],
+            "tipo_conta": body["tipo_conta"],
+            "natureza": body["natureza_padrao"],
+            "saldo_inicial": "0.00",
+            "lancamentos": body["lancamentos"],
+        },
+    )
+    assert confirmation.status_code == 200, confirmation.text
+    assert confirmation.json()["importadas"] == 2
+    assert confirmation.json()["ignoradas_duplicadas"] == 0
+
+    repeated = client.post(
+        "/api/v1/extratos/preview", headers=auth_headers, json=payload
+    )
+    assert repeated.status_code == 200
+    assert all(item["duplicada"] for item in repeated.json()["lancamentos"])

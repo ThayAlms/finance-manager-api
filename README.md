@@ -1,6 +1,6 @@
 # CaixaLivre API
 
-Aplicação web de gestão financeira para autônomos, freelancers e MEIs. O sistema separa finanças pessoais e do negócio e oferece dashboard, controle de contas, categorias, transações, metas e insights financeiros educativos.
+Aplicação web de gestão financeira para autônomos, freelancers e MEIs. O sistema separa finanças pessoais e do negócio e oferece dashboard, controle de contas, categorias, transações, metas, importação inteligente de extratos e insights financeiros educativos.
 
 > Projeto em construção.
 
@@ -22,6 +22,10 @@ um resumo do mês. O saldo nunca é um valor guardado em coluna: é sempre
 calculado a partir do histórico, para que não exista a possibilidade de
 divergir do extrato.
 
+Extratos CSV ou OFX podem ser analisados pelo Gemini para sugerir categoria e
+natureza PESSOAL/NEGOCIO. A aplicação sempre apresenta uma prévia revisável e
+só grava os lançamentos após confirmação do usuário.
+
 Detalhes em [docs/escopo.md](docs/escopo.md).
 
 ## Entregas
@@ -39,7 +43,7 @@ Detalhes em [docs/escopo.md](docs/escopo.md).
 - Pytest e HTTPX;
 - Docker e Docker Compose;
 - HTML, CSS, JavaScript e Nginx no frontend;
-- OpenAI Responses API para insights opcionais.
+- Gemini API para insights opcionais.
 
 ## Estrutura
 
@@ -101,11 +105,11 @@ O PostgreSQL é versionado pelo Alembic. Na inicialização pelo Docker, `alembi
 pytest -q
 ```
 
-Os testes cobrem autenticação, isolamento entre usuários, regras das transações, saldo calculado, dashboard, filtros, normalização, insights, erros e contrato OpenAPI.
+Os testes cobrem autenticação, isolamento entre usuários, regras das transações, saldo calculado, dashboard, filtros, normalização, importação de extratos, insights, erros e contrato OpenAPI.
 
 ## Insights com IA
 
-Configure `OPENAI_API_KEY` no arquivo `.env` para habilitar análises geradas por IA. A integração usa a Responses API e envia somente o resumo financeiro agregado do usuário. Sem uma chave, o endpoint continua respondendo com uma análise local determinística.
+Configure `GEMINI_API_KEY` no arquivo `.env` para habilitar análises geradas por IA. Para insights, a integração envia somente o resumo financeiro agregado. Na importação, envia data, descrição, valor e tipo dos lançamentos normalizados, sem nome da conta, e-mail, senha ou token. Sem uma chave, os dois fluxos continuam funcionando com regras locais determinísticas.
 
 ## Integrantes
 

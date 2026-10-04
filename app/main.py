@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.core.errors import register_exception_handlers
-from app.routers import accounts, auth, categories, dashboard, goals, health, insights, transactions, users
+from app.routers import accounts, auth, categories, dashboard, goals, health, insights, statements, transactions, users
 from app.schemas.common import COMMON_RESPONSES
 
 app = FastAPI(
@@ -38,6 +38,7 @@ for api_router in (
     goals.router,
     dashboard.router,
     insights.router,
+    statements.router,
 ):
     app.include_router(
         api_router,

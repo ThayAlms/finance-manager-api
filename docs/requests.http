@@ -95,7 +95,7 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/resumo?inicio={{inicio}}&fim={{fim}}
 Authorization: Bearer {{token}}
 
-### Insight financeiro (usa fallback local sem OPENAI_API_KEY)
+### Insight financeiro (usa fallback local sem GEMINI_API_KEY)
 POST {{baseUrl}}/insights?inicio={{inicio}}&fim={{fim}}
 Authorization: Bearer {{token}}
 

@@ -109,6 +109,7 @@ nomes e e-mail**, logo abaixo.
 | `data` | DATE | NOT NULL | RN13 |
 | `tipo` | tipo_movimento | NOT NULL | RN05 |
 | `natureza` | natureza | NOT NULL | RN14 |
+| `import_hash` | VARCHAR(64) | NULL, único por conta quando preenchido | RN18 — evita importação duplicada |
 | `criado_em` | TIMESTAMPTZ | NOT NULL, DEFAULT now() | |
 | `atualizado_em` | TIMESTAMPTZ | NOT NULL, DEFAULT now() | |
 
@@ -486,6 +487,7 @@ Table transacao {
   data date [not null, note: 'RN13 - nao pode ser futura']
   tipo tipo_movimento [not null, note: 'RN05 - deve bater com categoria.tipo']
   natureza natureza [not null, note: 'RN14']
+  import_hash varchar(64) [null, note: 'RN18 - unico por conta quando preenchido']
   criado_em timestamptz [not null, default: `now()`]
   atualizado_em timestamptz [not null, default: `now()`]
 
@@ -493,6 +495,7 @@ Table transacao {
     (conta_id, data)
     categoria_id
     data
+    (conta_id, import_hash) [unique, note: 'parcial: import_hash IS NOT NULL']
   }
 
   Note: 'Sem usuario_id de proposito - o dono vem por conta (3FN). Ver secao 3.'

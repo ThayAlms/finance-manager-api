@@ -5,6 +5,7 @@ const state = {
   accounts: [],
   categories: [],
   goals: [],
+  importPreview: null,
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -232,6 +233,17 @@ async function renderTransactions() {
   const accountOptions = state.accounts.map((item) => `<option value="${item.id}">${escapeHtml(item.nome)}</option>`).join("");
   const categoryOptions = state.categories.map((item) => `<option value="${item.id}" data-type="${item.tipo}">${escapeHtml(item.nome)} — ${item.tipo}</option>`).join("");
   $("#transactions-page").innerHTML = `
+    <article class="panel import-panel">
+      <div class="panel-head"><div><p class="eyebrow green">Importação inteligente</p><h2>Importar extrato bancário</h2><p class="muted">Envie CSV ou OFX. A IA sugere categoria e separa pessoa física de negócio antes de gravar.</p></div></div>
+      <form id="statement-form" class="inline-form import-form">
+        <label class="wide">Arquivo CSV ou OFX<input name="arquivo" type="file" accept=".csv,.ofx,.qfx,text/csv" required /></label>
+        <label>Nome da conta<input name="conta_nome" required maxlength="80" placeholder="Ex.: Banco Principal" /></label>
+        <label>Tipo<select name="tipo_conta"><option>CORRENTE</option><option>POUPANCA</option><option>CARTEIRA</option></select></label>
+        <label>Natureza padrão<select name="natureza_padrao"><option>PESSOAL</option><option>NEGOCIO</option></select></label>
+        <button class="button primary" type="submit">Analisar extrato</button>
+      </form>
+      <div id="import-preview"></div>
+    </article>
     <form id="transaction-form" class="inline-form">
       <label>Conta<select name="conta_id" required>${accountOptions}</select></label>
       <label>Categoria<select name="categoria_id" required>${categoryOptions}</select></label>
@@ -245,6 +257,105 @@ async function renderTransactions() {
       ${transactions.map((item) => `<tr><td>${new Date(`${item.data}T12:00:00`).toLocaleDateString("pt-BR")}</td><td>${escapeHtml(item.descricao)}</td><td>${escapeHtml(item.conta_nome)}</td><td>${escapeHtml(item.categoria_nome)}</td><td><span class="tag">${item.natureza === "NEGOCIO" ? "NEGÓCIO" : "PESSOAL"}</span></td><td class="${item.tipo === "RECEITA" ? "positive" : "negative"}">${item.tipo === "RECEITA" ? "+" : "−"} ${formatMoney(item.valor)}</td></tr>`).join("") || '<tr><td colspan="6" class="empty-state">Nenhuma transação no período.</td></tr>'}
     </tbody></table></div>`;
   $("#transaction-form").addEventListener("submit", createTransaction);
+  $("#statement-form").addEventListener("submit", analyzeStatement);
+  if (state.importPreview) renderImportPreview();
+}
+
+async function analyzeStatement(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const file = form.elements.arquivo.files[0];
+  if (!file) return;
+  const button = form.querySelector("button");
+  button.disabled = true;
+  button.textContent = "Analisando…";
+  try {
+    const body = {
+      arquivo_nome: file.name,
+      conteudo: await file.text(),
+      conta_nome: form.elements.conta_nome.value,
+      tipo_conta: form.elements.tipo_conta.value,
+      natureza_padrao: form.elements.natureza_padrao.value,
+    };
+    state.importPreview = await request("/extratos/preview", {
+      method: "POST", body: JSON.stringify(body),
+    });
+    renderImportPreview();
+    toast(`${state.importPreview.total_linhas} lançamentos encontrados. Revise antes de confirmar.`);
+  } catch (error) { toast(error.message, true); }
+  finally { button.disabled = false; button.textContent = "Analisar extrato"; }
+}
+
+function renderImportPreview() {
+  const preview = state.importPreview;
+  if (!preview || !$("#import-preview")) return;
+  const categoryOptions = (item) => state.categories
+    .filter((category) => category.tipo === item.tipo)
+    .map((category) => `<option value="${category.id}" ${category.id === item.categoria_id ? "selected" : ""}>${escapeHtml(category.nome)}</option>`)
+    .join("");
+  $("#import-preview").innerHTML = `
+    <div class="import-summary">
+      <span><strong>${preview.total_linhas}</strong> lançamentos</span>
+      <span><strong class="positive">${formatMoney(preview.total_creditos)}</strong> créditos</span>
+      <span><strong class="negative">${formatMoney(preview.total_debitos)}</strong> débitos</span>
+      <span class="tag">${preview.classificado_por_ia ? `IA: ${escapeHtml(preview.modelo)}` : "Regras locais"}</span>
+    </div>
+    ${preview.aviso ? `<p class="form-warning">${escapeHtml(preview.aviso)}</p>` : ""}
+    <div class="table-wrap"><table><thead><tr><th>Importar</th><th>Data</th><th>Descrição</th><th>Tipo</th><th>Valor</th><th>PF/PJ</th><th>Categoria</th><th>Confiança</th></tr></thead><tbody>
+      ${preview.lancamentos.map((item) => `<tr data-import-line="${item.linha}">
+        <td><input class="import-check" type="checkbox" ${item.duplicada ? "disabled" : "checked"} title="${item.duplicada ? "Já importada" : "Importar"}" /></td>
+        <td>${new Date(`${item.data}T12:00:00`).toLocaleDateString("pt-BR")}</td>
+        <td title="${escapeHtml(item.justificativa)}">${escapeHtml(item.descricao)}${item.duplicada ? ' <span class="tag">DUPLICADA</span>' : ""}</td>
+        <td>${item.tipo}</td><td>${formatMoney(item.valor)}</td>
+        <td><select class="import-nature"><option ${item.natureza === "PESSOAL" ? "selected" : ""}>PESSOAL</option><option ${item.natureza === "NEGOCIO" ? "selected" : ""}>NEGOCIO</option></select></td>
+        <td><select class="import-category">${categoryOptions(item)}</select></td>
+        <td>${Math.round(Number(item.confianca) * 100)}%</td>
+      </tr>`).join("")}
+    </tbody></table></div>
+    <div class="confirm-row"><p class="muted">Revise as sugestões. Nenhum dado foi gravado ainda.</p><button id="confirm-import" class="button primary">Confirmar importação</button></div>`;
+  $("#confirm-import").addEventListener("click", confirmStatement);
+}
+
+async function confirmStatement() {
+  const preview = state.importPreview;
+  const rows = $$('[data-import-line]');
+  const selected = rows.filter((row) => row.querySelector('.import-check').checked);
+  if (!selected.length) return toast("Selecione ao menos um lançamento.", true);
+  const items = selected.map((row) => {
+    const source = preview.lancamentos.find((item) => item.linha === Number(row.dataset.importLine));
+    const categoryId = Number(row.querySelector('.import-category').value);
+    const category = state.categories.find((item) => item.id === categoryId);
+    return {
+      ...source,
+      natureza: row.querySelector('.import-nature').value,
+      categoria_id: categoryId,
+      categoria_nome: category.nome,
+      duplicada: false,
+    };
+  });
+  const button = $("#confirm-import");
+  button.disabled = true;
+  button.textContent = "Importando…";
+  try {
+    const result = await request("/extratos/confirmar", {
+      method: "POST",
+      body: JSON.stringify({
+        conta_id: preview.conta_existente_id,
+        conta_nome: preview.conta_nome,
+        tipo_conta: preview.tipo_conta,
+        natureza: preview.natureza_padrao,
+        saldo_inicial: "0.00",
+        lancamentos: items,
+      }),
+    });
+    state.importPreview = null;
+    toast(`${result.importadas} transações importadas; ${result.ignoradas_duplicadas} duplicadas ignoradas.`);
+    await showPage("transactions");
+  } catch (error) {
+    button.disabled = false;
+    button.textContent = "Confirmar importação";
+    toast(error.message, true);
+  }
 }
 
 async function createTransaction(event) {

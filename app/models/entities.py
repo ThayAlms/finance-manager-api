@@ -89,6 +89,13 @@ class Transacao(TimestampMixin, Base):
         CheckConstraint("valor > 0", name="ck_transacao_valor_positivo"),
         Index("idx_transacao_conta_data", "conta_id", "data"),
         Index("idx_transacao_categoria", "categoria_id"),
+        Index(
+            "uq_transacao_conta_import_hash",
+            "conta_id",
+            "import_hash",
+            unique=True,
+            postgresql_where=text("import_hash IS NOT NULL"),
+        ),
     )
 
     id: Mapped[int] = mapped_column(ID_TYPE, primary_key=True)
@@ -109,6 +116,7 @@ class Transacao(TimestampMixin, Base):
     natureza: Mapped[Natureza] = mapped_column(
         Enum(Natureza, name="natureza"), nullable=False
     )
+    import_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
     conta: Mapped[Conta] = relationship()
     categoria: Mapped[Categoria] = relationship()
 

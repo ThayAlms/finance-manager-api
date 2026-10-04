@@ -49,6 +49,15 @@ def by_id_for_user(session: Session, conta_id: int, usuario_id: int) -> Conta | 
     )
 
 
+def by_name_for_user(session: Session, nome: str, usuario_id: int) -> Conta | None:
+    return session.scalar(
+        select(Conta).where(
+            Conta.usuario_id == usuario_id,
+            Conta.nome.ilike(nome.strip()),
+        )
+    )
+
+
 def duplicate(
     session: Session, usuario_id: int, nome: str, exclude_id: int | None = None
 ) -> Conta | None:

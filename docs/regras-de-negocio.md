@@ -328,6 +328,26 @@ de review: nenhum `float` no caminho do dinheiro.
 
 ---
 
+## G. Importação de extratos
+
+### RN18 — Importação exige revisão e não duplica lançamentos
+
+Um extrato é analisado em modo de prévia. A classificação sugerida pela IA ou
+pelas regras locais não pode criar conta ou transação até a confirmação do
+usuário. Cada lançamento confirmado recebe um hash de data, descrição e valor;
+o mesmo hash não pode ser repetido na mesma conta.
+
+**Por quê:** modelos podem classificar incorretamente e bancos podem exportar o
+mesmo período mais de uma vez. Revisão humana evita persistir interpretações
+erradas, e a deduplicação impede saldo duplicado.
+
+**Onde:** endpoints `/extratos/preview` e `/extratos/confirmar`, service de
+importação e índice único parcial em `(conta_id, import_hash)`.
+
+**Violação:** lançamentos repetidos são ignorados e contabilizados na resposta.
+
+---
+
 ## Restrições relevantes
 
 Restrição não é regra de negócio. A regra diz como o sistema se comporta; a

@@ -74,3 +74,18 @@ def count_by_category(session: Session, categoria_id: int) -> int:
     return session.scalar(
         select(func.count()).select_from(Transacao).where(Transacao.categoria_id == categoria_id)
     ) or 0
+
+
+def imported_hashes(
+    session: Session, conta_id: int, hashes: list[str]
+) -> set[str]:
+    if not hashes:
+        return set()
+    return set(
+        session.scalars(
+            select(Transacao.import_hash).where(
+                Transacao.conta_id == conta_id,
+                Transacao.import_hash.in_(hashes),
+            )
+        )
+    )

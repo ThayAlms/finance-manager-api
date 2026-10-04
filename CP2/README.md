@@ -2,6 +2,9 @@
 
 **Data da entrega:** 06/10/2026
 
+- [Enunciado recebido](ENUNCIADO.md)
+- [Auditoria contra o barema](AUDITORIA_BAREMA.md)
+
 ## Entregáveis
 
 - [x] Frontend do aplicativo
@@ -11,6 +14,9 @@
 - [x] Ajuste da documentação
 - [x] Testes iniciais
 - [x] Aplicação de LLM
+- [ ] Trello ou Notion atualizado
+- [ ] Apresentação do CP2
+- [ ] Branch publicada no GitHub
 
 ## Evidências
 

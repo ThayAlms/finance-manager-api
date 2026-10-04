@@ -53,7 +53,7 @@ A implementação cobre tecnicamente os **8 critérios pontuados** do trecho de 
 - [ ] Criar a apresentação e ensaiar o roteiro de demonstração.
 - [ ] Fazer QA visual manual em desktop e celular: login, formulários, navegação, gráficos, erros e feedback.
 - [ ] Executar uma chamada real de LLM com uma chave de desenvolvimento e registrar evidência sem expor a chave.
-- [ ] Confirmar com o professor os itens 6–8 ausentes e a conversão do barema de 8,5 para 30 pontos.
+- [ ] Confirmar com o professor a conversão do barema exibido, cuja soma é 8,5, para os 30 pontos informados no título.
 
 ## Roteiro mínimo da demonstração
 

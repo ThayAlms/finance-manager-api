@@ -77,6 +77,47 @@ As otimizações realizadas deverão ser explicadas durante a apresentação.
 A estrutura do banco deverá ser revisada considerando:
 
 - duplicidade de informações;
+- relacionamentos;
+- integridade dos dados;
+- organização das entidades;
+- índices quando necessários;
+- normalização, quando aplicável ao modelo utilizado.
+
+O grupo deverá justificar decisões importantes relacionadas à modelagem.
+
+## 6. Atualização da documentação
+
+A documentação deverá acompanhar a evolução do projeto.
+
+Deverão ser atualizados:
+
+- README;
+- Swagger;
+- instruções de instalação;
+- endpoints;
+- arquitetura;
+- funcionalidades;
+- variáveis de ambiente.
+
+## 7. Testes iniciais
+
+O projeto deverá possuir testes das funcionalidades consideradas importantes.
+
+Poderão ser utilizados:
+
+- testes unitários;
+- testes de integração;
+- testes de endpoints;
+- testes de regras de negócio.
+
+Os testes deverão ser executáveis e seus resultados demonstrados durante a apresentação.
+
+## 8. Aplicação de LLM
+
+O projeto deverá utilizar pelo menos uma funcionalidade baseada em **Large Language Models**.
+
+Exemplos:
+
 - geração de relatórios;
 - classificação de informações;
 - assistente inteligente;
@@ -143,4 +184,4 @@ A apresentação deverá demonstrar:
 | Testes iniciais | 1,0 |
 | Aplicação e integração da LLM | 1,0 |
 
-> Nota de transcrição: o texto recebido salta do item 5 para o item 9 e a soma dos valores exibidos no barema é 8,5, embora o título informe 30 pontos. O conteúdo acima foi preservado sem inventar os itens ausentes.
+> Nota de transcrição: a soma dos valores exibidos no barema é 8,5, embora o título informe 30 pontos. O conteúdo recebido foi preservado sem alterar essa divergência.

@@ -266,7 +266,7 @@ Python instalado no computador do avaliador.
 Resultado esperado:
 
 ```text
-12 passed
+13 passed
 ```
 
 ## 11. Verificar a migração do banco
@@ -310,7 +310,7 @@ Esta etapa deve ser executada manualmente em desktop e em uma largura de celular
 | Otimização | filtros, paginação e saldo agregado | repositories e `X-Total-Count` |
 | Banco | integridade, índices e normalização | Alembic `0001`, `0002`, `0003` e DER |
 | Documentação | instalação, arquitetura e endpoints | README, `docs/` e Swagger |
-| Testes | executar `pytest` no container | 12 testes e GitHub Actions |
+| Testes | executar `pytest` no container | 13 testes, BCrypt e GitHub Actions |
 | LLM | insight e importação multimodal | Gemini, revisão humana, timeout e fallback |
 
 ## 14. Material da apresentação e gestão

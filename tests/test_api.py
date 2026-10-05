@@ -1,7 +1,11 @@
 import base64
 from datetime import date, timedelta
 
-from tests.conftest import register_and_login
+from sqlalchemy import select
+
+from app.core.security import verify_password
+from app.models import Usuario
+from tests.conftest import TestingSession, register_and_login
 
 
 def test_health_and_openapi(client):
@@ -32,6 +36,29 @@ def test_registration_login_and_protected_profile(client):
     )
     assert profile.status_code == 200
     assert profile.json()["nome"] == "Maria Silva"
+
+
+def test_password_is_stored_only_as_bcrypt_hash(client):
+    plain_password = "Senha@123"
+    response = client.post(
+        "/api/v1/usuarios",
+        json={
+            "nome": "Teste de Hash",
+            "email": "hash@example.com",
+            "senha": plain_password,
+        },
+    )
+    assert response.status_code == 201
+
+    with TestingSession() as session:
+        user = session.scalar(
+            select(Usuario).where(Usuario.email == "hash@example.com")
+        )
+        assert user is not None
+        assert user.senha_hash != plain_password
+        assert user.senha_hash.startswith(("$2a$", "$2b$", "$2y$"))
+        assert verify_password(plain_password, user.senha_hash)
+        assert not verify_password("Senha-incorreta@123", user.senha_hash)
 
 
 def test_financial_workflow_and_calculated_balance(client, auth_headers):

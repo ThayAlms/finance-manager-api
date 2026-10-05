@@ -22,7 +22,7 @@ externas: publicação da branch, evidência de Trello/Notion e apresentação f
 | Otimização da API | Atendido | Saldo agregado sem N+1, filtros, `offset`, `limit`, `X-Total-Count` e índices adicionais | 0,5/0,5 |
 | Banco | Atendido | Migrações `0002` e `0003`, índices case-insensitive, agregações e deduplicação de extratos | 1,0/1,0 |
 | Documentação e Swagger | Atendido | README, `docs/API.md`, exemplos HTTP e schemas/response models do FastAPI | 0,5/0,5 |
-| Testes iniciais | Atendido | 12 testes aprovados localmente, no Docker e preparados para CI | 1,0/1,0 |
+| Testes iniciais | Atendido | 13 testes, incluindo verificação direta de que senha não é armazenada em texto puro | 1,0/1,0 |
 | Integração da LLM | Atendido | `POST /api/v1/insights`, importação inteligente, Gemini API validada em execução real, timeout e fallback | 1,0/1,0 |
 
 **Cobertura técnica estimada:** `8,5/8,5` nos valores exibidos no texto recebido. O asterisco restante indica somente a conferência visual final em navegador antes da apresentação.

@@ -32,7 +32,7 @@
 | Otimização | Saldo das contas calculado em consulta agregada; filtros e paginação em transações |
 | Banco | Migrações [`0002_normalizacao_cp2.py`](../alembic/versions/0002_normalizacao_cp2.py) e [`0003_importacao_extratos.py`](../alembic/versions/0003_importacao_extratos.py) |
 | Documentação | README, documentação da API, exemplos HTTP e comandos atualizados |
-| Testes | 12 testes automatizados cobrindo CP1 e os fluxos novos da CP2 |
+| Testes | 13 testes automatizados, incluindo verificação direta do hash BCrypt |
 | LLM | `POST /api/v1/insights` via Gemini API, com timeout e fallback local |
 | Importação inteligente | Prévia PDF/CSV/OFX/QFX, classificação PF/PJ, revisão humana e deduplicação |
 | Extratos públicos | PDF combinado e três páginas individuais em `CP2/` |
@@ -49,7 +49,7 @@
 
 ## Validação realizada
 
-- `pytest -q`: **12 testes aprovados**.
+- `pytest -q`: **13 testes aprovados**.
 - `docker compose exec api pytest -q`: suíte disponível dentro da imagem Docker.
 - `node --check frontend/app.js`: JavaScript válido.
 - `docker compose config --quiet`: configuração válida.

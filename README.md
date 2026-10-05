@@ -109,7 +109,7 @@ O PostgreSQL é versionado pelo Alembic. Na inicialização pelo Docker, `alembi
 docker compose exec api pytest -q
 ```
 
-O comando não exige Python instalado no computador. Os 12 testes cobrem autenticação, isolamento entre usuários, regras das transações, saldo calculado, dashboard, filtros, normalização, importação de extratos, insights, erros e contrato OpenAPI. A mesma suíte também roda no GitHub Actions.
+O comando não exige Python instalado no computador. Os 13 testes cobrem autenticação, armazenamento seguro da senha, isolamento entre usuários, regras das transações, saldo calculado, dashboard, filtros, normalização, importação de extratos, insights, erros e contrato OpenAPI. A mesma suíte também roda no GitHub Actions.
 
 ## Insights com IA
 

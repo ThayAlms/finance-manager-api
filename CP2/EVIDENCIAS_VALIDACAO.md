@@ -24,11 +24,11 @@ docker compose exec api pytest -q
 Resultado:
 
 ```text
-12 passed, 1 warning
+13 passed, 1 warning
 ```
 
 O warning vem da compatibilidade futura entre TestClient e HTTPX; não representa
-falha funcional. A suíte cobre autenticação, autorização, CRUD, dashboard,
+falha funcional. A suíte cobre autenticação, hash BCrypt, autorização, CRUD, dashboard,
 filtros, normalização, importação e integração mockada com Gemini.
 
 ## LLM e importação

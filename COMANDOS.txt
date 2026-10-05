@@ -58,10 +58,11 @@ aplica as migrações e executa a API com recarga automática.
 
 8. EXECUTAR OS TESTES
 
-pytest -q
+docker compose exec api pytest -q
 
-Valida autenticação, regras de negócio, isolamento, dashboard, filtros,
-normalização, insights e OpenAPI.
+Executa os 12 testes dentro do container, sem exigir Python local. Valida
+autenticação, regras de negócio, isolamento, dashboard, filtros, normalização,
+importação de extratos, Gemini mockado, fallback e OpenAPI.
 
 9. ENDEREÇOS
 

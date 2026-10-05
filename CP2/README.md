@@ -5,6 +5,9 @@
 - [Enunciado recebido](ENUNCIADO.md)
 - [Auditoria contra o barema](AUDITORIA_BAREMA.md)
 - [Guia de teste do professor](GUIA_TESTE_PROFESSOR.md)
+- [Roteiro da apresentação](ROTEIRO_APRESENTACAO.md)
+- [Plano para Trello ou Notion](PLANO_TRELLO_NOTION.md)
+- [Evidências de validação](EVIDENCIAS_VALIDACAO.md)
 
 ## Entregáveis
 
@@ -16,7 +19,8 @@
 - [x] Testes iniciais
 - [x] Aplicação de LLM
 - [ ] Trello ou Notion atualizado
-- [ ] Apresentação do CP2
+- [x] Roteiro completo da apresentação
+- [ ] Arquivo final de slides criado pelo grupo
 - [ ] Branch publicada no GitHub
 
 ## Evidências
@@ -30,7 +34,8 @@
 | Documentação | README, documentação da API, exemplos HTTP e comandos atualizados |
 | Testes | 12 testes automatizados cobrindo CP1 e os fluxos novos da CP2 |
 | LLM | `POST /api/v1/insights` via Gemini API, com timeout e fallback local |
-| Importação inteligente | Prévia PDF/CSV/OFX, classificação PF/PJ, revisão humana e deduplicação |
+| Importação inteligente | Prévia PDF/CSV/OFX/QFX, classificação PF/PJ, revisão humana e deduplicação |
+| Extratos públicos | PDF combinado e três páginas individuais em `CP2/` |
 
 ## Critérios de aceite
 
@@ -45,12 +50,13 @@
 ## Validação realizada
 
 - `pytest -q`: **12 testes aprovados**.
+- `docker compose exec api pytest -q`: suíte disponível dentro da imagem Docker.
 - `node --check frontend/app.js`: JavaScript válido.
 - `docker compose config --quiet`: configuração válida.
 - Builds Docker da API e do frontend concluídos.
 - PostgreSQL inicializado com Alembic em `0003 (head)`.
 - Smoke test em containers: saúde `UP`, frontend HTTP `200`, cadastro, login e resumo aprovados.
 - Gemini validado em chamada real para insights e classificação de extrato em PESSOAL/NEGÓCIO.
-- PDF real de 3 páginas validado por leitura multimodal: 16 lançamentos extraídos na prévia, sem persistência automática.
+- [`Extratos públicos para teste.pdf`](<Extratos públicos para teste.pdf>) validado por leitura multimodal: 16 lançamentos extraídos na prévia, sem persistência automática.
 
 > A conferência visual interativa deve ser repetida em um navegador antes da apresentação final, pois o ambiente de automação usado na implementação não disponibilizou uma superfície de navegador controlável.

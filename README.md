@@ -2,7 +2,8 @@
 
 Aplicação web de gestão financeira para autônomos, freelancers e MEIs. O sistema separa finanças pessoais e do negócio e oferece dashboard, controle de contas, categorias, transações, metas, importação inteligente de extratos e insights financeiros educativos.
 
-> Projeto em construção.
+> Versão técnica do CP2 concluída. Publicação da branch, quadro externo e slides
+> finais permanecem como atividades de entrega do grupo.
 
 ## O problema
 
@@ -86,6 +87,7 @@ Endereços locais:
 ## Documentação
 
 - [Escopo](docs/escopo.md)
+- [Arquitetura](docs/ARQUITETURA.md)
 - [Regras de negócio](docs/regras-de-negocio.md)
 - [Modelo de dados](docs/modelo-dados.md)
 - [Diagrama entidade-relacionamento (DER)](docs/der.png)
@@ -104,14 +106,14 @@ O PostgreSQL é versionado pelo Alembic. Na inicialização pelo Docker, `alembi
 ## Testes
 
 ```bash
-pytest -q
+docker compose exec api pytest -q
 ```
 
-Os testes cobrem autenticação, isolamento entre usuários, regras das transações, saldo calculado, dashboard, filtros, normalização, importação de extratos, insights, erros e contrato OpenAPI.
+O comando não exige Python instalado no computador. Os 12 testes cobrem autenticação, isolamento entre usuários, regras das transações, saldo calculado, dashboard, filtros, normalização, importação de extratos, insights, erros e contrato OpenAPI. A mesma suíte também roda no GitHub Actions.
 
 ## Insights com IA
 
-Configure `GEMINI_API_KEY` no arquivo `.env` para habilitar análises geradas por IA. Para insights, a integração envia somente o resumo financeiro agregado. Na importação, envia data, descrição, valor e tipo dos lançamentos normalizados, sem nome da conta, e-mail, senha ou token. Sem uma chave, os dois fluxos continuam funcionando com regras locais determinísticas.
+Configure `GEMINI_API_KEY` no arquivo `.env` para habilitar análises geradas por IA. Para insights, a integração envia somente o resumo financeiro agregado. Na importação CSV/OFX, envia os lançamentos normalizados, sem nome da conta, e-mail, senha ou token. PDFs exigem a chave e, após confirmação explícita, são enviados integralmente ao Gemini para leitura multimodal. Sem chave, insights e CSV/OFX usam fallback local; PDFs são recusados com erro explicado ao usuário.
 
 ## Integrantes
 

@@ -1,0 +1,16 @@
+VALIDAÇÃO DA IMAGEM DESTINADA À VERCEL
+Data: 2026-10-20
+
+Comando de build:
+docker build -f Dockerfile.vercel -t caixalivre-vercel-test .
+
+Resultado:
+- build concluído com sucesso;
+- contêiner iniciado na rede local do Docker Compose com PORT=80;
+- Alembic executou a migração no PostgreSQL;
+- GET /health retornou HTTP 200 e {"status":"UP"};
+- GET / retornou HTTP 200 e content-type text/html.
+
+Observação: esta evidência valida localmente o artefato de contêiner que será
+executado pela Vercel. A URL pública somente existirá após a publicação no
+projeto Vercel da equipe.

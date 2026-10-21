@@ -2,8 +2,9 @@
 
 Aplicação web de gestão financeira para autônomos, freelancers e MEIs. O sistema separa finanças pessoais e do negócio e oferece dashboard, controle de contas, categorias, transações, metas, importação inteligente de extratos e insights financeiros educativos.
 
-> Versão técnica do CP2 concluída. Publicação da branch, quadro externo e slides
-> finais permanecem como atividades de entrega do grupo.
+> Versão técnica do CP3 preparada com testes, Docker, deploy na Vercel,
+> monetização, quadro ágil e apresentação. A URL pública deve ser preenchida
+> depois da publicação na conta do grupo.
 
 ## O problema
 
@@ -36,6 +37,11 @@ Detalhes em [docs/escopo.md](docs/escopo.md).
 - [CP1 — 01/09/2026](CP1/README.md)
 - [CP2 — 06/10/2026](CP2/README.md)
 - [CP3 — 27/10/2026](CP3/README.md)
+
+## Planejamento
+
+- [Trello - Controle Financeiro CPs](https://trello.com/b/9r4U0gNO/controle-financeiro-cps)
+- [Quadro ágil versionado do CP3](CP3/docs/QUADRO_AGIL.md)
 
 ## Stack
 
@@ -94,6 +100,9 @@ Endereços locais:
 - [Endpoints e exemplos](docs/API.md)
 - [Decisões da integração](docs/DECISOES_DE_INTEGRACAO.md)
 - [Checklist da CP2](CP2/README.md)
+- [Entrega final do CP3](CP3/README.md)
+- [Quadro ágil do CP3](CP3/docs/QUADRO_AGIL.md)
+- [Proposta de monetização](CP3/docs/MONETIZACAO.md)
 
 ## Segurança e isolamento
 
@@ -109,7 +118,7 @@ O PostgreSQL é versionado pelo Alembic. Na inicialização pelo Docker, `alembi
 docker compose exec api pytest -q
 ```
 
-O comando não exige Python instalado no computador. Os 13 testes cobrem autenticação, armazenamento seguro da senha, isolamento entre usuários, regras das transações, saldo calculado, dashboard, filtros, normalização, importação de extratos, insights, erros e contrato OpenAPI. A mesma suíte também roda no GitHub Actions.
+O comando não exige Python instalado no computador. Os 15 testes cobrem autenticação, armazenamento seguro da senha, isolamento entre usuários, regras das transações, saldo calculado, dashboard, filtros, normalização, importação de extratos, insights, erros, contrato OpenAPI e compatibilidade do serviço publicado. A mesma suíte também roda no GitHub Actions.
 
 ## Insights com IA
 

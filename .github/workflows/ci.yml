@@ -2,7 +2,7 @@ name: Testes Python
 
 on:
   push:
-    branches: ["main", "feature/python-vitor", "checkpoint-2"]
+    branches: ["main", "feature/python-vitor", "checkpoint-2", "checkpoint-3"]
   pull_request:
 
 jobs:
@@ -42,3 +42,7 @@ jobs:
         run: |
           node --check frontend/app.js
           docker build -t caixalivre-frontend-test ./frontend
+      - name: Validar imagem de produção
+        run: |
+          docker build -t caixalivre-api-test .
+          docker build -f Dockerfile.vercel -t caixalivre-vercel-test .

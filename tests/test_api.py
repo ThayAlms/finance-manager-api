@@ -4,6 +4,7 @@ from datetime import date, timedelta
 from sqlalchemy import select
 
 from app.core.security import verify_password
+from app.core.config import Settings
 from app.models import Usuario
 from tests.conftest import TestingSession, register_and_login
 
@@ -14,6 +15,21 @@ def test_health_and_openapi(client):
     assert document["info"]["title"] == "CaixaLivre API"
     assert "/api/v1/transacoes" in document["paths"]
     assert document["components"]["securitySchemes"]["HTTPBearer"]["scheme"] == "bearer"
+
+
+def test_frontend_is_served_by_production_api_image(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "CaixaLivre" in response.text
+    assert "text/html" in response.headers["content-type"]
+
+
+def test_cloud_postgres_url_uses_installed_psycopg_driver():
+    settings = Settings(
+        _env_file=None,
+        database_url="postgresql://usuario:senha@database:5432/caixalivre",
+    )
+    assert settings.database_url.startswith("postgresql+psycopg://")
 
 
 def test_registration_login_and_protected_profile(client):

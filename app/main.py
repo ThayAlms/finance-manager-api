@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.core.config import settings
 from app.core.errors import register_exception_handlers
@@ -45,3 +48,9 @@ for api_router in (
         prefix="/api/v1",
         responses=COMMON_RESPONSES,
     )
+
+# A imagem de produção publica a SPA e a API no mesmo domínio. O mount fica por
+# último para não interceptar /api, /health, /docs e /openapi.json.
+frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
+if frontend_dir.is_dir():
+    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")

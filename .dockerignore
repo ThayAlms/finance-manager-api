@@ -4,6 +4,8 @@
 __pycache__
 .pytest_cache
 .env
+.vercel
+.codex-pptx
 CP1
 CP2
 CP3

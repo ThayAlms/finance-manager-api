@@ -1,0 +1,35 @@
+EVIDÊNCIA DE CONTAINERIZAÇÃO - CAIXALIVRE CP3
+Data: 20/10/2026
+Docker Engine: 29.7.2
+
+COMANDO
+docker compose up -d --build
+
+RESULTADO
+- Imagem finance-manager-api-api construída com sucesso.
+- Imagem finance-manager-api-frontend construída com sucesso.
+- PostgreSQL 16 iniciado e marcado como healthy.
+- Migrações Alembic executadas até head.
+- Uvicorn iniciado em 0.0.0.0:8000.
+- Frontend Nginx iniciado em localhost:3000.
+
+DOCKER COMPOSE PS
+SERVICE    STATUS                 PORTS
+postgres   Up (healthy)           5432:5432
+api        Up                     8000:8000
+frontend   Up                     3000:80
+
+VERIFICAÇÕES HTTP
+GET http://localhost:8000/health  -> 200 {"status":"UP"}
+GET http://localhost:3000/health  -> 200 {"status":"UP"}
+GET http://localhost:8000/        -> 200, HTML contém "CaixaLivre"
+GET http://localhost:3000/        -> 200
+
+TESTES DENTRO DA IMAGEM
+docker compose exec -T api pytest -q
+
+...............                                                          [100%]
+15 passed, 1 warning in 6.20s
+
+O aviso é uma depreciação futura do TestClient/HTTPX e não representa falha.
+Os logs não contêm senhas, tokens, chaves de API ou dados bancários.

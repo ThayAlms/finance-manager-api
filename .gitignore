@@ -18,6 +18,8 @@ dist/
 .ruff_cache/
 htmlcov/
 .coverage
+.codex-pptx/
+.vercel/
 
 .vscode/
 .idea/
